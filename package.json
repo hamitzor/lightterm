@@ -1,0 +1,9 @@
+{
+  "name": "light-terminal",
+  "version": "1.0.0",
+  "description": "A browser based Linux Terminal emulator",
+  "main": "./lib/main.js",
+  "repository": "https://mygit.th-deg.de/hz29287/light-terminal",
+  "author": "Hamit Zor <thenrerise@gmail.com>",
+  "license": "MIT"
+}
