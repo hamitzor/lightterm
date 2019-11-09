@@ -11,7 +11,7 @@ const rl = readline.createInterface({
 })
 
 const showPromt = () => {
-   rl.question(`${commandRunner.getCWD()} $ `, command => {
+   rl.question(`${commandRunner.getCWD()}${commandRunner.isUnix ? ':$ ' : '>'} `, command => {
       if (command === 'exit') {
          rl.close()
          return
