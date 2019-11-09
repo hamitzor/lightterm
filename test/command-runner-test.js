@@ -11,7 +11,8 @@ const rl = readline.createInterface({
 })
 
 const showPromt = () => {
-   rl.question(`${commandRunner.getCWD()}${commandRunner.isUnix ? ':$ ' : '>'} `, command => {
+   const promt = `${commandRunner.getUser()}@${commandRunner.getHostName()}:${commandRunner.getCWD()}${commandRunner.isUnix ? '$' : '>'} `
+   rl.question(promt, command => {
       if (command === 'exit') {
          rl.close()
          return
@@ -24,4 +25,9 @@ const showPromt = () => {
    })
 }
 
+console.log('Welcome to command-runner test! This is a terminal emulator tests CommandRunner class')
+console.log(`isUnix: ${commandRunner.isUnix.toString()}`)
+console.log(`home: ${commandRunner.getHome()}`)
+console.log(`user: ${commandRunner.getUser()}`)
+console.log(`host: ${commandRunner.getHostName()}\n`)
 showPromt()

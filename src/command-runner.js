@@ -10,15 +10,93 @@ class CommandRunner {
       this.home = this.isUnix ? process.env.HOME : process.env.USERPROFILE
       this.cwd = this.home
       this.user = this.isUnix ? process.env.USER : process.env.USERNAME
-      this.hostname = this.isUnix ? process.env.HOSTNAME : process.env.USERDOMAIN
+      this.hostname = os.hostname()
+      /*
+         Translator functions for making changes on the outputs of commands
+         e.g an ls translator is built-in which adds --color argument to get a fancy output
+      */
+      this.outputTranslators = { 'ls': [output => output.replace(/(\r\n|\n|\r)/gm, '  ')] }
+      /*
+         Translator functions for making changes on commands before they are executed
+         e.g an ls output translator is built-in which removes \r\n between file names on output.
+      */
+      this.commandTranslators = {
+         'ls': [
+            command => {
+               const args = command.split(' ')
+               args.shift()
+               return ['ls --color', ...args].join(' ')
+            }
+         ]
+      }
+   }
+   /*
+       Additional output translators can be added with this method. 
+       'program' is the name of the program in the command that 
+       the translator will be applied to its output, e.g 'ls' is the 
+       program name in a 'ls -a -D' command.
+       'translator' is the translator function which simply
+       takes an output and returns a translated output.
+   */
+   addOutputTranslator(program, translator) {
+      if (!this.outputTranslators[program]) {
+         this.outputTranslators[program] = [translator]
+      }
+      else {
+         this.outputTranslators[program] = [...this.outputTranslators[program], translator]
+      }
+   }
+   /*
+       Additional command translators can be added with this method. 
+       'program' is the name of the program in the command that 
+       the translator will be applied to, e.g 'ls' is the program name 
+       in a 'ls -a -D' command.
+       'translator' is the translator function which simply
+       takes a command and returns a translated command.
+   */
+   addCommandTranslator(program, translator) {
+      if (!this.commandTranslators[program]) {
+         this.commandTranslators[program] = [translator]
+      }
+      else {
+         this.commandTranslators[program] = [...this.commandTranslators[program], translator]
+      }
+   }
+   // Method that applies all output translators by a given command
+   translateOutput(command, output) {
+      const program = command.split(' ')[0]
+      const translators = this.outputTranslators[program]
+      let translatedOutput = output
+      if (translators) {
+         translators.forEach(translator => {
+            translatedOutput = translator(translatedOutput)
+         })
+      }
+      return translatedOutput
+   }
+   // Method that applies all command translators by a given command
+   translateCommand(command) {
+      const program = command.split(' ')[0]
+      const translators = this.commandTranslators[program]
+      let translatedCommand = command
+      if (translators) {
+         translators.forEach(translator => {
+            translatedCommand = translator(translatedCommand)
+         })
+      }
+      return translatedCommand
+   }
+   //Returns cwd according to platform (if linux, adds ~ sysmbol)
+   getCWD() {
+      let cwd = `${path.resolve(this.cwd)}`
+      if (this.isUnix) {
+         cwd = cwd.replace(process.env.HOME, '~')
+      }
+      return cwd
    }
 
-   getCWD() {
-      const cwd = `${this.isUnix ? '\x1b[1m\x1b[34m' : ''}${path.resolve(this.cwd)}`
-      if (this.isUnix) {
-         cwd.replace(process.env.HOME, '~')
-      }
-      return `${cwd}\x1b[0m`
+   getHome() {
+      return this.home
    }
 
    getUser() {
@@ -31,15 +109,21 @@ class CommandRunner {
 
    run(command) {
       try {
+         //Obtain program name
          const program = command.split(' ')[0]
+         //if it is not cd (change directory command) then do usual routine
          if (program !== 'cd') {
-            return CommandRunner.translateOutput(command,
-               execSync(CommandRunner.translateCommand(command),
-                  { shell: this.isUnix ? '/bin/bash' : undefined, cwd: this.cwd }).toString())
+            const translatedCommand = this.translateCommand(command)
+            const output = execSync(translatedCommand, { shell: this.isUnix ? '/bin/bash' : undefined, cwd: this.cwd }).toString()
+            return this.translateOutput(command, output)
          }
+         //if not, do change directory
          else {
+            //check for second argument (desired directory)
             const dir = command.split(' ')[1]
+            //if it is not present, change it with home so user can cd its home when it types only 'cd'
             const newCWD = path.resolve(this.cwd, dir === undefined ? this.home : dir)
+            //see if the directory exists, if not return a fancy message with respect to platform
             if (fs.existsSync(newCWD) && fs.lstatSync(newCWD).isDirectory()) {
                this.cwd = newCWD
             }
@@ -49,30 +133,9 @@ class CommandRunner {
          }
       }
       catch (err) {
+         //@TODO: do logging maybe?
          return ''
       }
-   }
-}
-
-CommandRunner.translateOutput = (command, output) => {
-   const program = command.split(' ')[0]
-   switch (program) {
-      case 'ls':
-         return output.replace(/(\r\n|\n|\r)/gm, '  ')
-      default:
-         return output
-   }
-}
-
-CommandRunner.translateCommand = command => {
-   const args = command.split(' ')
-   const program = args[0]
-   args.shift()
-   switch (program) {
-      case 'ls':
-         return ['ls --color', ...args].join(' ')
-      default:
-         return [program, ...args].join(' ')
    }
 }
 
