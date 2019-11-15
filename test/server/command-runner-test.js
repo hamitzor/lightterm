@@ -1,7 +1,6 @@
-const CommandRunner = require('../src/command-runner')
+const CommandRunner = require('../../src/server/services/command-runner')
 
 const commandRunner = new CommandRunner()
-
 
 const readline = require('readline')
 

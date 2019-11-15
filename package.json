@@ -7,6 +7,11 @@
    "author": "Hamit Zor <thenrerise@gmail.com>",
    "license": "MIT",
    "scripts": {
-      "test-command-runner": "node test/command-runner-test.js"
+      "start": "node src/server",
+      "test-command-runner": "node test/server/command-runner-test.js"
+   },
+   "dependencies": {
+      "body-parser": "^1.19.0",
+      "express": "^4.17.1"
    }
 }

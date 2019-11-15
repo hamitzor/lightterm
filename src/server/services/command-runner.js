@@ -5,12 +5,12 @@ const fs = require('fs')
 
 class CommandRunner {
 
-   constructor() {
-      this.isUnix = os.platform() !== 'win32'
-      this.home = this.isUnix ? process.env.HOME : process.env.USERPROFILE
-      this.cwd = this.home
-      this.user = this.isUnix ? process.env.USER : process.env.USERNAME
-      this.hostname = os.hostname()
+   constructor({ isUnix, home, cwd, user, hostname }) {
+      this.isUnix = isUnix
+      this.home = home
+      this.cwd = cwd
+      this.user = user
+      this.hostname = hostname
       /*
          Translator functions for making changes on the outputs of commands
          e.g an ls translator is built-in which adds --color argument to get a fancy output
@@ -86,7 +86,7 @@ class CommandRunner {
       }
       return translatedCommand
    }
-   //Returns cwd according to platform (if linux, adds ~ sysmbol)
+   //Returns cwd according to platform (if linux, adds ~ placeholder for home directory)
    getCWD() {
       let cwd = `${path.resolve(this.cwd)}`
       if (this.isUnix) {
