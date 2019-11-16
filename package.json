@@ -7,11 +7,26 @@
    "author": "Hamit Zor <thenrerise@gmail.com>",
    "license": "MIT",
    "scripts": {
-      "start": "node src/server",
-      "test-command-runner": "node test/server/command-runner-test.js"
+      "scss": "gulp",
+      "start": "nodemon -r source-map-support/register lib/bundle.server.js",
+      "watch": "webpack --watch --mode development"
    },
    "dependencies": {
+      "@babel/preset-env": "^7.7.1",
+      "ansi-to-html": "^0.6.13",
       "body-parser": "^1.19.0",
+      "core-js": "^3.4.1",
       "express": "^4.17.1"
+   },
+   "devDependencies": {
+      "@babel/core": "^7.7.2",
+      "babel-loader": "^8.0.6",
+      "gulp": "^4.0.2",
+      "gulp-clean-css": "^4.2.0",
+      "gulp-rename": "^1.4.0",
+      "gulp-sass": "^4.0.2",
+      "nodemon": "^1.19.4",
+      "webpack": "^4.41.2",
+      "webpack-cli": "^3.3.10"
    }
 }

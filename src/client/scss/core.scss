@@ -1,0 +1,18 @@
+body, input {
+   font-size: 20px;
+   font-family: 'Courier New', Courier, monospace;
+}
+
+#command-reader {
+   border: none;
+   background-color: #eee;
+   width: 100%;
+}
+
+#command-reader:focus {
+   outline: none;
+}
+
+#container {
+   width: 100%;
+}
