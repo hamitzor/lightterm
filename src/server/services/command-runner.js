@@ -15,7 +15,7 @@ class CommandRunner {
          Translator functions for making changes on the outputs of commands
          e.g an ls translator is built-in which adds --color argument to get a fancy output
       */
-      this.outputTranslators = { 'ls': [output => output.replace(/(\r\n|\n|\r)/gm, '  ')] }
+      this.outputTranslators = { 'ls': [output => output.replace(/\ /gm, '\t')] }
       /*
          Translator functions for making changes on commands before they are executed
          e.g an ls output translator is built-in which removes \r\n between file names on output.
@@ -25,7 +25,7 @@ class CommandRunner {
             command => {
                const args = command.split(' ')
                args.shift()
-               return ['ls --color', ...args].join(' ')
+               return ['ls -C --color', ...args].join(' ')
             }
          ]
       }

@@ -41,7 +41,7 @@ class TerminalEmulator {
          }
          else {
             this.command = this.commandValueInputEl.value
-            this.commandValueEl.innerHTML = this.command.replace(/\ /g, '&nbsp;')
+            this.commandValueEl.innerHTML = this.command.replace(/\ /gm, '&nbsp;')
          }
       })
 
@@ -85,7 +85,7 @@ class TerminalEmulator {
             this.cwd = response.cwd
             this.updatePromptString()
             if (response.output) {
-               this.logEl.appendChild(util.createEl(`<div>${ansiiConverter.toHtml(response.output.replace(/</g, '&lt;').replace(/>/g, '&gt;'))}</div>`))
+               this.logEl.appendChild(util.createEl(`<div>${ansiiConverter.toHtml(response.output.replace(/</gm, '&lt;').replace(/>/gm, '&gt;'))}</div>`))
             }
             this.runningCommand = false
             this.commandValueInputEl.value = ''
