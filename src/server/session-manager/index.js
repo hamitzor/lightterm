@@ -15,7 +15,6 @@ class SessionManager {
    createSession() {
       const isUnix = os.platform() !== 'win32'
       const home = isUnix ? process.env.HOME : process.env.USERPROFILE
-      console.log(home)
       const user = isUnix ? process.env.USER : process.env.USERNAME
       const hostname = os.hostname()
       const sessionId = crypto.randomBytes(56).toString('hex')

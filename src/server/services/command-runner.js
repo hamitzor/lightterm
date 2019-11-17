@@ -134,7 +134,7 @@ class CommandRunner {
       }
       catch (err) {
          //@TODO: do logging maybe?
-         return ''
+         return `Command '${command}' not found`
       }
    }
 }

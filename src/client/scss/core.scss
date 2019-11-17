@@ -1,18 +1,23 @@
 body, input {
    font-size: 20px;
-   font-family: 'Courier New', Courier, monospace;
+   font-family: 'Roboto Mono', monospace;
+   background-color: #222;
+   color:white
 }
 
-#command-reader {
-   border: none;
-   background-color: #eee;
+.main-container {
    width: 100%;
 }
 
-#command-reader:focus {
-   outline: none;
+.command-reader {
+   display: flex;
+   & .prompt-string{
+      padding-right: 10px;
+   }
+   & input.command-value-input{
+      width: 0;
+      height: 0;
+      opacity: 0;
+   }
 }
 
-#container {
-   width: 100%;
-}

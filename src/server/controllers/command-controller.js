@@ -6,19 +6,22 @@ module.exports = (req, res) => {
 
    const session = SessionManager.getInstance().getSession(sessionId)
    if (!session) {
-      res.send(JSON.stringify(
+      res.json(
          {
             status: 'BAD',
             response: 'Session not found'
          }
-      ))
+      )
    }
    else {
-      res.send(JSON.stringify(
+      res.json(
          {
             status: 'OK',
-            response: session.commandRunner.run(command)
+            response: {
+               output: session.commandRunner.run(command),
+               cwd: session.commandRunner.getCWD()
+            }
          }
-      ))
+      )
    }
 }

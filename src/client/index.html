@@ -7,17 +7,20 @@
    <meta http-equiv="X-UA-Compatible" content="ie=edge">
    <title>Light Terminal</title>
    <link rel="stylesheet" href="/public/core.min.css">
+   <link href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap" rel="stylesheet">
 </head>
 
 <body>
-   <div id="container">
-      <b><span style="color:#00A">Android</span></b> <b><span style="color:#00A">backups</span></b>
-      <b><span style="color:#00A">bin</span></b> <b><span style="color:#00A">Documents</span></b> <b><span
-            style="color:#00A">Downloads</span></b> <b><span style="color:#00A">Pictures</span></b>
-      <b><span style="color:#00A">playground</span></b> <b><span style="color:#00A">Postman</span></b> <b><span
-            style="color:#00A">projects</span></b> <b><span style="color:#00A">snap</span></b>
-      <b><span style="color:#00A">software</span></b> <b><span style="color:#0AA">stoesd_ii_2019-20</span></b>
-      <input id="command-reader">
+   <div class="main-container">
+      <div id="emulator1">
+         <div class="log"></div>
+         <div tabindex="1" class="command-reader">
+            <div class="prompt-string"></div>
+            <div class="command-value"></div>
+            <div class="cursor">_</div>
+            <input class="command-value-input" type="text" />
+         </div>
+      </div>
    </div>
    <script src="/public/bundle.js"></script>
 </body>

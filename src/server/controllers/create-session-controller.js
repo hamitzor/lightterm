@@ -1,10 +1,22 @@
 const SessionManager = require('../session-manager')
 
 module.exports = (req, res) => {
-   res.send(JSON.stringify(
+   const sessionId = SessionManager.getInstance().createSession()
+   const commandRunner = SessionManager.getInstance().getSession(sessionId).commandRunner
+
+   res.json(
       {
          status: 'OK',
-         response: SessionManager.getInstance().createSession()
+         response: {
+            sessionId: sessionId,
+            sessionInfo: {
+               user: commandRunner.getUser(),
+               hostname: commandRunner.getHostName(),
+               home: commandRunner.getHome(),
+               cwd: commandRunner.getCWD(),
+               isUnix: commandRunner.isUnix
+            }
+         }
       }
-   ))
+   )
 }
