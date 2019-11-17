@@ -18,5 +18,5 @@ module.exports = async () => {
    const terminal = new TerminalEmulator(options)
 
    document.addEventListener('click', () => terminal.commandReaderEl.focus())
-   console.log(terminal.commandReaderEl.focus())
+   terminal.commandReaderEl.focus()
 }

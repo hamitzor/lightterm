@@ -134,7 +134,7 @@ class CommandRunner {
       }
       catch (err) {
          //@TODO: do logging maybe?
-         return `Command '${command}' not found`
+         return this.isUnix ? `Command '${command}' not found` : `'${command}' is not recognized as an internal or external command, operable program or batch file.`
       }
    }
 }

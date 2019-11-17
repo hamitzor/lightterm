@@ -85,12 +85,13 @@ class TerminalEmulator {
             this.cwd = response.cwd
             this.updatePromptString()
             if (response.output) {
-               this.logEl.appendChild(util.createEl(`<div>${ansiiConverter.toHtml(response.output)}</div>`))
+               this.logEl.appendChild(util.createEl(`<div>${ansiiConverter.toHtml(response.output.replace(/</g, '&lt;').replace(/>/g, '&gt;'))}</div>`))
             }
             this.runningCommand = false
             this.commandValueInputEl.value = ''
             this.commandValueEl.innerHTML = ''
             this.command = ''
+            window.scrollTo(0,document.body.scrollHeight)
          })
    }
 

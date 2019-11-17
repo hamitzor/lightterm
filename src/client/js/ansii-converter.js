@@ -1,6 +1,7 @@
 const Convert = require('ansi-to-html')
 
 module.exports = new Convert({
+   newline: true,
    colors: {
       0: '#000',
       1: '#FF1F48',
@@ -20,3 +21,5 @@ module.exports = new Convert({
       15: '#FFF'
    }
 })
+
+window.converter = module.exports
