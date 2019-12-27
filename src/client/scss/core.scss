@@ -3,9 +3,9 @@ html{
 }
 
 body, input {
-   font-size: 20px;
    height: 100%;
    margin: 0;
+   position: relative;
 }
 
 .main-container {
@@ -16,10 +16,20 @@ body, input {
    justify-content: center;
 }
 
-.term-screen{
-   color: #000;
-   background-color: #ddd;
-   font-family: courier-new, courier, monospace;
-   font-size: 20px;
+.term-row{
+   overflow: hidden;
 }
 
+.term-cell{
+   display: inline-block;
+   height: 100%; 
+   vertical-align: top;
+}
+
+.fake-term-cell{
+   opacity: 0;
+}
+
+.hide{
+   position: absolute;
+}

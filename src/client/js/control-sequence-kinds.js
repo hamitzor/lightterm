@@ -1,0 +1,2 @@
+exports.STYLE_ESCAPE = 0
+exports.CHANGE_WINDOW_TITLE_ESCAPE = 1
