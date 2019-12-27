@@ -1,9 +1,9 @@
 require('core-js/stable')
 require('regenerator-runtime/runtime')
 
-const ContentMatrix = global.ContentMatrix
-const Renderer = global.Renderer
-const OutputParser = global.OutputParser
+const ContentMatrix = require('./content-matrix')
+const Renderer = require('./renderer')
+const OutputParser = require('./output-parser')
 
 const cm = new ContentMatrix({ cols: 100, rows: 15 })
 const renderer = new Renderer({ termScreenEl: document.getElementById('term-screen'), contentMatrix: cm })
