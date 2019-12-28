@@ -25,7 +25,11 @@ class SessionManager {
          encoding: 'utf8'
       })
       this._sessions[sessionId] = { cols, rows, logs, emulator }
-      emulator.on('data', data => this._sessions[sessionId].logs += data)
+      emulator.on('data', data => {
+         if(this._sessions[sessionId]){
+            this._sessions[sessionId].logs += data
+         }
+      })
       console.log('Session created: ', { sessionId, cols, rows })
       return sessionId
    }

@@ -28,31 +28,21 @@ exports.connect = (ws, req) => {
 
    ws.send(session.logs)
 
-   function bufferUtf8(socket, timeout) {
-      let buffer = []
-      let sender = null
-      let length = 0
-      return (data) => {
-         buffer.push(data)
-         length += data.length
-         if (!sender) {
-            sender = setTimeout(() => {
-               socket.send(buffer.join(''))
-               buffer = []
-               sender = null
-               length = 0
-            }, timeout)
-         }
-      }
-   }
-
-   const send = bufferUtf8(ws, 20)
+   let buffer = []
+   let timeout = null
 
    session.emulator.on('data', function (data) {
-      try {
-         send(data)
-      } catch (ex) {
-         // The WebSocket is not open, ignore
+      buffer.push(data)
+      if (!timeout) {
+         timeout = setTimeout(() => {
+            try {
+               ws.send(buffer.join(''))
+               buffer = []
+               timeout = null
+            } catch (e) {
+               console.log('Connection is already closed')
+            }
+         }, 25)
       }
    })
 

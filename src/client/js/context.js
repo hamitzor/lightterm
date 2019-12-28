@@ -3,13 +3,12 @@ class Context {
       this._cur = [0, 0]
       this._rows = rows
       this._cols = cols
+      this._applicationCursorKeys = false
+      this._applicationKeypad = false
       this._OSCommandData = []
       this._styleData = new Array(rows)
       for (let i = 0; i < rows; i++) {
          this._styleData[i] = new Array(cols)
-         for (let j = 0; j < cols; j++) {
-            this._styleData[i][j] = []
-         }
       }
 
       this._charMatrix = new Array(rows)
@@ -21,6 +20,22 @@ class Context {
       }
    }
 
+   setApplicationCursorKeys() {
+      this._applicationCursorKeys = true
+   }
+
+   unsetApplicationCursorKeys() {
+      this._applicationCursorKeys = false
+   }
+
+   setApplicationKeypad() {
+      this._applicationKeypad = true
+   }
+
+   unsetApplicationKeypad() {
+      this._applicationKeypad = false
+   }
+
    removeAll() {
       for (let i = 0; i < this.getRowNumber(); i++) {
          for (let j = 0; j < this.getColNumber(); j++) {
@@ -29,17 +44,17 @@ class Context {
       }
    }
 
-   removeFromCursorToEnd(n) {
-      for (let i = this.getCursorY(); i < this.getColNumber(); i++) {
-         this.set(n, i, '')
+   removeFromCursorToEnd() {
+      for (let i = this.getCursorY(); i < this._cols; i++) {
+         this.set(this.getCursorX(), i, '')
       }
-      for (let i = this.getCursorX(); i < this.getRowNumber(); i++) {
-         for (let j = 0; j < this.getColNumber(); j++) {
+      for (let i = this.getCursorX(); i < this._rows; i++) {
+         for (let j = 0; j < this._cols; j++) {
             this.set(i, j, '')
          }
       }
    }
-
+   //@TODO remove n
    removeFromCursorToBeginning(n) {
       for (let i = this.getCursorY(); i < this.getColNumber(); i++) {
          this.set(n, i, '')
@@ -53,6 +68,18 @@ class Context {
 
    removeFromCursorToLineEnd(n) {
       for (let i = this.getCursorY(); i < this.getColNumber(); i++) {
+         this.set(n, i, '')
+      }
+   }
+
+   removeFromBeginningToCursor(n) {
+      for (let i = 0; i < this.getCursorY() + 1; i++) {
+         this.set(n, i, '')
+      }
+   }
+
+   removeLine(n) {
+      for (let i = 0; i < this.getColNumber(); i++) {
          this.set(n, i, '')
       }
    }
@@ -76,6 +103,28 @@ class Context {
       }
    }
 
+   removeChar(n) {
+      for (let j = this.getCursorY(); j < this._cols; j++) {
+         if (j < this._cols - 1) {
+            this.set(this.getCursorX(), j, this.get(this.getCursorX(), j + 1))
+         }
+         else {
+            this.set(this.getCursorX(), j, this.get(this.getCursorX() + 1, 0))
+         }
+      }
+
+      for (let i = this.getCursorX() + 1; i < this._rows; i++) {
+         for (let j = 0; j < this._cols; j++) {
+            if (j < this._cols - 1) {
+               this.set(i, j, this.get(i, j + 1))
+            }
+            else {
+               this.set(i, j, (i < this._rows - 1) ? this.get(i + 1, 0) : '')
+            }
+         }
+      }
+   }
+
    getRowNumber() {
       return this._rows
    }
@@ -88,8 +137,8 @@ class Context {
       return this._OSCommandData
    }
 
-   setOSCommandData(OSCommandData) {
-      this._OSCommandData = OSCommandData
+   addOSCommandData(OSCommandData) {
+      this._OSCommandData.push(OSCommandData)
    }
 
    getStyleData(x, y) {

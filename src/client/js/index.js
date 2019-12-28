@@ -6,7 +6,7 @@ const TerminalEmulator = require('./terminal-emulator')
 const init = async function () {
 
    const rows = 35
-   const cols = 85
+   const cols = 130
    const termScreenEl = document.getElementById('term-tab')
 
    const res = await fetch('http://localhost:5000/session/create/' + rows + '/' + cols)
@@ -21,9 +21,10 @@ const init = async function () {
          termScreenEl, rows, cols, webSocket: ws
       })
       const pm = emulator.getProfileManager()
-      pm.updateText({ fontSize: 20 })
+      pm.updateText({ fontSize: 18 })
       pm.updateStyleSheet()
       emulator.connect()
+      emulator.focus()
    })
 }
 

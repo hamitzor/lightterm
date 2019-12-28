@@ -2,10 +2,10 @@
 class ProfileManager {
    constructor() {
       this._colors = [
-         '#FFF',
-         '#000',
-         '#000',
-         '#FFF',
+         '#FFF',           //text
+         '#000',           //background
+         '#000',           //cursor
+         '#FFF',             //cursor background
          '#2E3436',          //black
          '#CC0000',            //red
          '#4E9A06',          //green
@@ -49,8 +49,9 @@ class ProfileManager {
          background-color: ${this._colors[1]};
          font-family: ${this._text.fontFamily};
          font-size: ${this._text.fontSize}px;
-         padding: 2px;
-         cursor: default
+         padding: 0;
+         cursor: default;
+         outline: none;
       }
 
       .term-cell-style-1 {
