@@ -8,7 +8,7 @@
    "license": "MIT",
    "scripts": {
       "scss": "gulp",
-      "start": "nodemon -r source-map-support/register lib/bundle.server.js",
+      "start": "nodemon -r source-map-support/register src/server/index.js",
       "watch": "webpack --watch --mode development"
    },
    "dependencies": {
@@ -16,7 +16,10 @@
       "body-parser": "^1.19.0",
       "core-js": "^3.4.1",
       "express": "^4.17.1",
-      "regenerator-runtime": "^0.13.3"
+      "express-ws": "^4.0.0",
+      "node-pty": "^0.9.0",
+      "regenerator-runtime": "^0.13.3",
+      "webpack": "4.28.4"
    },
    "devDependencies": {
       "@babel/core": "^7.7.2",
@@ -26,7 +29,6 @@
       "gulp-rename": "^1.4.0",
       "gulp-sass": "^4.0.2",
       "nodemon": "^1.19.4",
-      "webpack": "^4.41.2",
       "webpack-cli": "^3.3.10"
    }
 }

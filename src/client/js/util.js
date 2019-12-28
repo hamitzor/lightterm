@@ -1,5 +1,7 @@
-exports.createElement = html => {
-   const div = document.createElement('div')
-   div.innerHTML = html.trim()
-   return div.firstChild
+exports.delay = function (t) {
+   return new Promise(resolve => {
+      setTimeout(() => {
+         resolve()
+      }, t)
+   })
 }

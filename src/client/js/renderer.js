@@ -1,13 +1,12 @@
 const controlSequenceKind = require('./control-sequence-kinds')
-const profileManager = require('./profile-manager')
 
 class Renderer {
 
-   constructor({ colorProfile, termScreenEl, termScreenTitleEl, context }) {
+   constructor({ profileManager, termScreenEl, termScreenTitleEl, context }) {
       this._root = termScreenEl
       this._title = termScreenTitleEl
       this._context = context
-      this._cp = colorProfile
+      this._profileManager = profileManager
       this._HTMLContent = ''
    }
 
@@ -22,7 +21,7 @@ class Renderer {
    }
 
    render() {
-      const { w, h } = profileManager.getCellSize()
+      const { w, h } = this._profileManager.getCellSize()
       for (let i = 0; i < this._context.getOSCommandData().length; i++) {
          if (this._context.getOSCommandData()[i][0] === controlSequenceKind.CHANGE_WINDOW_TITLE_ESCAPE) {
             console.log('Tab title changed to ', this._context.getOSCommandData()[i][1])
@@ -37,7 +36,8 @@ class Renderer {
          newInnerHTML = newInnerHTML + `<div class="term-row" style="width: ${w * this._context.getColNumber()}px; height: ${h}px; line-height: ${h}px;">`
          for (let j = 0; j < this._context.getRow(i).length; j++) {
             const classList = []
-            if (this._context.getCursorX() === i && this._context.getCursorY() === j) {
+            const isCursor = this._context.getCursorX() === i && this._context.getCursorY() === j
+            if (isCursor) {
                classList.push('term-cursor-cell')
             }
             if (this._context.getStyleData(i, j)) {
@@ -46,7 +46,7 @@ class Renderer {
                })
             }
 
-            newInnerHTML = newInnerHTML + `<span class="term-cell ${classList.join(' ')}" style="width: ${w}px;">${this._context.get(i, j)}</span>`
+            newInnerHTML = newInnerHTML + `<span class="term-cell ${classList.join(' ')}" style="${isCursor ? `height: ${h - 2}px;` : ""} width: ${w}px;">${this._context.get(i, j)}</span>`
 
          }
          newInnerHTML = newInnerHTML + `</div>`

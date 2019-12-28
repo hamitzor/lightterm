@@ -1,6 +1,5 @@
 const crypto = require("crypto")
-const os = require('os')
-const CommandRunner = require('../services/command-runner')
+const pty = require('node-pty')
 
 class SessionManager {
 
@@ -8,23 +7,35 @@ class SessionManager {
       this._sessions = {}
    }
 
-   updateSession(update) {
-      this._sessions[sessionId] = { ...this._sessions[sessionId], ...update }
+   resize({ sessionId, cols, rows }) {
+      const session = this._sessions[sessionId]
+      this._sessions[sessionId] = { ...session, cols, rows }
+      session.emulator.resize(parseInt(cols), parseInt(rows))
+      console.log('Resized: ', { sessionId, cols, rows })
    }
 
-   createSession() {
-      const isUnix = os.platform() !== 'win32'
-      const home = isUnix ? process.env.HOME : process.env.USERPROFILE
-      const user = isUnix ? process.env.USER : process.env.USERNAME
-      const hostname = os.hostname()
+   createSession({ cols, rows }) {
       const sessionId = crypto.randomBytes(56).toString('hex')
-      const commandRunner = new CommandRunner({ isUnix, home, cwd: home, user, hostname })
-      this._sessions[sessionId] = { isUnix, home, user, hostname, commandRunner }
+      const logs = ''
+      const emulator = pty.spawn('bash', [], {
+         name: 'xterm-256color',
+         cols: parseInt(cols),
+         rows: parseInt(rows),
+         cwd: process.cwd(),
+         encoding: 'utf8'
+      })
+      this._sessions[sessionId] = { cols, rows, logs, emulator }
+      emulator.on('data', data => this._sessions[sessionId].logs += data)
+      console.log('Session created: ', { sessionId, cols, rows })
       return sessionId
    }
 
    getSession(sessionId) {
       return this._sessions[sessionId]
+   }
+
+   deleteSession(sessionId) {
+      delete this._sessions[sessionId]
    }
 }
 

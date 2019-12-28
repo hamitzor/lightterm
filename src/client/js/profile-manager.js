@@ -116,7 +116,7 @@ class ProfileManager {
       .term-cursor-cell {
          color: ${this._colors[2]};
          background-color: ${this._colors[3]};
-         animation: blinker ${this._text.cursorBlinkInterval}ms steps(1, end) infinite
+         /*animation: blinker ${this._text.cursorBlinkInterval}ms steps(1, end) infinite*/
       }`
 
       document.getElementById('term-style').appendChild(document.createTextNode(content))
@@ -132,4 +132,4 @@ class ProfileManager {
 
 }
 
-module.exports = new ProfileManager()
+module.exports = ProfileManager

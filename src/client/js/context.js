@@ -21,6 +21,42 @@ class Context {
       }
    }
 
+   removeAll() {
+      for (let i = 0; i < this.getRowNumber(); i++) {
+         for (let j = 0; j < this.getColNumber(); j++) {
+            this.set(i, j, '')
+         }
+      }
+   }
+
+   removeFromCursorToEnd(n) {
+      for (let i = this.getCursorY(); i < this.getColNumber(); i++) {
+         this.set(n, i, '')
+      }
+      for (let i = this.getCursorX(); i < this.getRowNumber(); i++) {
+         for (let j = 0; j < this.getColNumber(); j++) {
+            this.set(i, j, '')
+         }
+      }
+   }
+
+   removeFromCursorToBeginning(n) {
+      for (let i = this.getCursorY(); i < this.getColNumber(); i++) {
+         this.set(n, i, '')
+      }
+      for (let i = this.getCursorX(); i > -1; i--) {
+         for (let j = 0; j < this.getColNumber(); j++) {
+            this.set(i, j, '')
+         }
+      }
+   }
+
+   removeFromCursorToLineEnd(n) {
+      for (let i = this.getCursorY(); i < this.getColNumber(); i++) {
+         this.set(n, i, '')
+      }
+   }
+
    shiftContent(n) {
       for (let i = 0; i < this._rows; i++) {
          if (i > this._rows - n - 1) {
