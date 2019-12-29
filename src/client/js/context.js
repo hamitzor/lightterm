@@ -122,22 +122,24 @@ class Context {
    }
 
    removeChar(n) {
-      for (let j = this.getCursorY(); j < this._cols; j++) {
-         if (j < this._cols - 1) {
-            this.set(this.getCursorX(), j, this.get(this.getCursorX(), j + 1))
-         }
-         else {
-            this.set(this.getCursorX(), j, this.get(this.getCursorX() + 1, 0))
-         }
-      }
-
-      for (let i = this.getCursorX() + 1; i < this._rows; i++) {
-         for (let j = 0; j < this._cols; j++) {
+      for (let k = 0; k < n; k++) {
+         for (let j = this.getCursorY(); j < this._cols; j++) {
             if (j < this._cols - 1) {
-               this.set(i, j, this.get(i, j + 1))
+               this.set(this.getCursorX(), j, this.get(this.getCursorX(), j + 1))
             }
             else {
-               this.set(i, j, (i < this._rows - 1) ? this.get(i + 1, 0) : '')
+               this.set(this.getCursorX(), j, (this.getCursorX() < this._rows - 1) ? this.get(this.getCursorX() + 1, 0) : '   ')
+            }
+         }
+
+         for (let i = this.getCursorX() + 1; i < this._rows; i++) {
+            for (let j = 0; j < this._cols; j++) {
+               if (j < this._cols - 1) {
+                  this.set(i, j, this.get(i, j + 1))
+               }
+               else {
+                  this.set(i, j, (i < this._rows - 1) ? this.get(i + 1, 0) : '')
+               }
             }
          }
       }
@@ -184,6 +186,9 @@ class Context {
    }
 
    get(x, y) {
+      if (x > this._rows - 1 || y > this._cols - 1) {
+         throw Error(`Bad cell request: ${x}, ${y}`)
+      }
       return this._charMatrix[x][y]
    }
 

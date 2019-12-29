@@ -54,7 +54,7 @@ class OutputParser {
 
             if (match = new RegExp(/^\u001b\[(\d*)(?:;?(\d*))*m$/gmu).exec(symbol)) {
                match.shift()
-               let styleCodes = match.filter(m => m !== undefined).map(m => parseInt(m))
+               let styleCodes = match.filter(m => m !== undefined).map(m => m === '' ? 0 : m).map(m => parseInt(m))
                for (let i = 0; i < styleCodes.length; i++) {
                   if (styleCodes[i] === 0) {
                      styleCodes.splice(i, 1)
@@ -269,7 +269,7 @@ class OutputParser {
                      //util.log('SPACE SYMBOLE')
                   }
                   else {
-                     //util.log('NORMAL SYMBOLE', symbol)
+                     util.log('NORMAL SYMBOLE', symbol)
                   }
 
                   this._context.setStyleData(this._context.getCursorX(), this._context.getCursorY(), [...globalStyleCodes])

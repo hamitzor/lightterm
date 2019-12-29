@@ -1,4 +1,3 @@
-const ProfileManager = require('./profile-manager')
 const Context = require('./context')
 const Renderer = require('./renderer')
 const OutputParser = require('./output-parser')
@@ -78,22 +77,34 @@ class TerminalEmulator {
       this._termScreenEl.addEventListener('keydown', e => {
          const ctrl = e.ctrlKey ? e.ctrlKey : (((e.keyCode || e.which) === 17) ? true : false)
 
-         if (ctrl && ['c', 'C', 'd', 'D'].includes(e.key)) {
-            this.write(CHARACTER_MAP[`Control${e.key.toUpperCase()}`])
+         if (ctrl && ['v', 'V'].includes(e.key)) {
+            navigator.clipboard.readText()
+               .then(content => {
+                  this.write(content)
+               })
+               .catch(err => {
+                  console.error('Cannot paste clipboard content', err)
+               })
             e.preventDefault()
             e.stopPropagation()
-            return
          }
-
-         if (['Tab', 'Control'].includes(e.key)) {
-            if (e.preventDefault) {
+         else {
+            if (ctrl && ['c', 'C', 'd', 'D'].includes(e.key)) {
+               this.write(CHARACTER_MAP[`Control${e.key.toUpperCase()}`])
                e.preventDefault()
+               e.stopPropagation()
+            }
+            else {
+               if (['Tab', 'Control'].includes(e.key)) {
+                  if (e.preventDefault) {
+                     e.preventDefault()
+                  }
+               }
+               if (!['Shift', 'F5', 'Alt', 'AltGraph', 'Control', 'CapsLock', 'Escape'].includes(e.key)) {
+                  this.write(e.key.length > 1 ? (CHARACTER_MAP[e.key] !== undefined ? { keyboardKey: CHARACTER_MAP[e.key] } : e.key) : e.key)
+               }
             }
          }
-         if (['Shift', 'F5', 'Alt', 'AltGraph', 'Control', 'CapsLock', 'Escape'].includes(e.key)) {
-            return
-         }
-         this.write(e.key.length > 1 ? (CHARACTER_MAP[e.key] !== undefined ? { keyboardKey: CHARACTER_MAP[e.key] } : e.key) : e.key)
       })
    }
 

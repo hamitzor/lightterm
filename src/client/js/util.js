@@ -1,4 +1,4 @@
-const DEBUG = false
+const DEBUG = true
 const TERM_INDICATORS = false
 const BUFFERED_RENDERING = true
 
