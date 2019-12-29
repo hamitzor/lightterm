@@ -1,9 +1,10 @@
 const express = require('express')
+const sessionControllers = require('../controllers/session-controllers')
 
-const sessionController = require('../controllers/session-controller')
 const sessionRouter = express.Router()
 
-sessionRouter.get('/create/:rows/:cols', sessionController.create)
-sessionRouter.get('/resize/:sessionId/:rows/:cols', sessionController.resize)
+/* Session routes are bound to corresponding controllers */
+sessionRouter.get('/create/:rows/:cols', sessionControllers.create)
+sessionRouter.get('/resize/:sessionId/:rows/:cols', sessionControllers.resize)
 
 module.exports = sessionRouter

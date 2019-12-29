@@ -1,1 +1,2 @@
-require('./app')
+/* Start server-side application */
+require('./app')()
