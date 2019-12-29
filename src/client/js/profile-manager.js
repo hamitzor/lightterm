@@ -25,7 +25,7 @@ class ProfileManager {
       ]
 
       this._text = {
-         fontFamily: 'Courier Prime',
+         fontFamily: 'monospace',
          fontSize: 18
       }
    }
@@ -99,6 +99,7 @@ class ProfileManager {
    }
 
    getCellSize() {
+      //@TODO: wait a little bit to calculate size of cell, font is not loading that fast...
       const el = document.getElementById('size-calc-container')
       el.style.fontFamily = this._text.fontFamily
       el.style.fontSize = `${this._text.fontSize}px`

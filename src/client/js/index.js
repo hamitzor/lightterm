@@ -3,10 +3,17 @@ require('regenerator-runtime/runtime')
 const TerminalManager = require('./terminal-manager')
 
 const demo = async () => {
+   const hidedEl = document.getElementById('hide')
+   const fontString = `Anonymous+Pro|B612+Mono|Courier+Prime|Cousine|Cutive+Mono|Fira+Code|Fira+Mono|IBM+Plex+Mono|Nanum+Gothic+Coding|Nova+Mono|Overpass+Mono|Oxygen+Mono|PT+Mono|Roboto|Share+Tech+Mono|Source+Code+Pro|Space+Mono|Ubuntu+Mono`
+   const fontNames = fontString.split('|').map(f => f.replace(/\+/g, ' ')).filter(f => f !== 'Roboto')
+   fontNames.unshift('monospace')
+   hidedEl.innerHTML = fontNames.map(f => `<span style="font-family:${f}">A</span>`).join('')
+
    const terminalManager = new TerminalManager({
       tabScreensContainerEl: document.getElementById('tab-screens-container'),
       tabTitlesEl: document.getElementById('tab-titles'),
-      newTabBtnEl: document.getElementById('new-tab-btn')
+      newTabBtnEl: document.getElementById('new-tab-btn'),
+      alertEl: document.getElementById('alert')
    })
 
    await terminalManager.newTab()
@@ -25,6 +32,8 @@ const demo = async () => {
    for (let i = 0; i < 20; i++) {
       colorSettingEls[i] = document.getElementById(i)
    }
+
+   fontFamilySettingInputEl.innerHTML = fontNames.map(f => `<option value="${f}">${f}</option>`).join('')
 
    rowSettingInputEl.value = terminalManager.getRowNumber()
    colSettingInputEl.value = terminalManager.getColNumber()

@@ -5,10 +5,11 @@ const TerminalEmulator = require('./terminal-emulator')
 
 
 class TerminalManager {
-   constructor({ tabScreensContainerEl, tabTitlesEl, newTabBtnEl }) {
+   constructor({ tabScreensContainerEl, tabTitlesEl, newTabBtnEl, alertEl }) {
       this._tabScreensContainerEl = tabScreensContainerEl
       this._tabTitlesEl = tabTitlesEl
       this._newTabBtnEl = newTabBtnEl
+      this._alertEl = alertEl
       this._profileManager = new ProfileManager()
       this._profileManager.updateStyleSheet()
       this._rows = 35
@@ -32,7 +33,7 @@ class TerminalManager {
          this._tabs[i].emulator.getContext().resize(rows, cols)
       }
       for (let i = 0; i < this._tabs.length; i++) {
-         await fetch(`http://localhost:5000/session/resize/${this._tabs[i].id}/${rows}/${cols}`)
+         await fetch(`http://localhost:${config.port}/session/resize/${this._tabs[i].id}/${rows}/${cols}`)
       }
       this.refreshScreens()
    }
@@ -90,6 +91,23 @@ class TerminalManager {
       this.updateTabTitleStyle()
    }
 
+   async uploadFile(targetPath, files) {
+      const formData = new FormData()
+      formData.append('targetPath', targetPath)
+      for (let i = 0; i < files.length; i++) {
+         formData.append('file' + i, files[i])
+      }
+      await fetch(`http://localhost:${config.port}/file`, {
+         method: 'POST',
+         body: formData
+      })
+      this._alertEl.innerHTML = 'Uploaded files successfully!'
+      this._alertEl.classList.add('show')
+      setTimeout(() => {
+         this._alertEl.classList.remove('show')
+      }, 2000)
+   }
+
    changeTab(index) {
       this._activeTab = index
       this.updateActiveTabTitle()
@@ -128,9 +146,9 @@ class TerminalManager {
    }
 
    async createSession() {
-      const res = await fetch(`http://localhost:5000/session/create/${this._rows}/${this._cols}`)
+      const res = await fetch(`http://localhost:${config.port}/session/create/${this._rows}/${this._cols}`)
       const { response: { sessionId } } = await res.json()
-      return { sessionId, ws: new WebSocket(`ws://localhost:5000/session/connect/${sessionId}`) }
+      return { sessionId, ws: new WebSocket(`ws://localhost:${config.port}/session/connect/${sessionId}`) }
    }
 
    async newTab() {
@@ -150,13 +168,14 @@ class TerminalManager {
          onBell: () => new Audio('/public/bell.mp3').play(),
          onTitleUpdate: title => {
             this.updateTabTitleText(this.getTabIndex(sessionId), title)
+            this._tabs[this.getTabIndex(sessionId)].title = title
          }
       })
       ws.addEventListener('open', () => {
          emulator.connect()
          emulator.focus()
       })
-      this._tabs.push({ id: sessionId, emulator })
+      this._tabs.push({ id: sessionId, emulator, title: '~' })
       const closeBtnEl = util.createEl('<button class="tab-title-close-btn">&#215;</button>')
       closeBtnEl.addEventListener('click', e => {
          e.stopPropagation()
@@ -170,6 +189,18 @@ class TerminalManager {
       this.updateActiveTabTitle()
       this.updateTabTitleStyle()
       this.updateActiveTab()
+
+      termScreenEl.addEventListener('drop', e => {
+         e.preventDefault()
+         const files = e.dataTransfer.files
+         const targetPath = new RegExp(/.*@.*:(.*)/g).exec(this._tabs[this.getTabIndex(sessionId)].title)[1]
+         this.uploadFile(targetPath, files)
+      })
+
+      termScreenEl.addEventListener('dragover', e => {
+         e.preventDefault()
+      })
+
       this._busy = false
    }
 }

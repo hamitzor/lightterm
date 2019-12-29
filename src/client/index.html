@@ -16,10 +16,13 @@
 </head>
 
 <body>
+   <div id="hide" class="hide">
+   </div>
    <div class="hide">
       <span id="size-calc-container" class="term-cell fake-term-cell">o</span>
    </div>
    <div class="main-container">
+      <div id="alert" class="alert"></div>
       <div class="settings-container" id="settings">
          <div class="settings-title">
             <div>SETTINGS</div>
@@ -32,7 +35,9 @@
          <div>Font Size(px)</div>
          <div><input id="settings-input-font-size" type="number"></div>
          <div>Font Family</div>
-         <div><input id="settings-input-font-family" type="text"></div>
+         <div>
+            <select id="settings-input-font-family"></select>
+         </div>
 
          <div>Text Color</div>
          <div><input id="0" type="text"></div>

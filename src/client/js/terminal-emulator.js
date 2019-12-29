@@ -15,7 +15,8 @@ const CHARACTER_MAP = {
    Escape: '\u001b',
    ControlC: '\x03',
    ControlD: '\x04',
-   Delete: '\u001b[3~'
+   Delete: '\u001b[3~',
+   F12: ''
 }
 
 class TerminalEmulator {

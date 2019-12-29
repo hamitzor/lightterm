@@ -243,7 +243,6 @@ class OutputParser {
          }
          else {
             if (!osc) {
-               //@TODO handle Delete button!!!
                if (symbol === '\x08') {
                   util.log('BACKSPACE SYMBOLE')
                   this._context.setCursorY(this._context.getCursorY() - 1)

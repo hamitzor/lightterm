@@ -5,12 +5,14 @@ const path = require('path')
 const config = require('../../config.json')
 const expressWs = require('express-ws')
 const sessionController = require('./controllers/session-controller')
+const busboy = require('connect-busboy')
 
 const app = express()
 expressWs(app)
 
 app.use(express.static(path.resolve(__dirname, '../client')))
 app.use(bodyParser.json())
+app.use(busboy())
 app.use(rootRouter)
 app.ws('/session/connect/:sessionId', sessionController.connect)
 

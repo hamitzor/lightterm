@@ -43,6 +43,9 @@ button{
 
 .hide{
    position: absolute;
+   font-size: 25px;
+   opacity:0;
+   z-index: -1000;
 }
 
 .window-title{
@@ -98,6 +101,7 @@ button{
    cursor: pointer;
    border: 1px solid rgb(0, 130, 206);
    position: relative;
+   font-weight: 500;
 }
 
 .tab-title-close-btn{
@@ -179,4 +183,23 @@ button{
 
 .settings-save-btn:hover{
    background-color: rgb(123, 228, 128);
+}
+
+.alert{
+   position: absolute;
+   height: 40px;
+   top: 0;
+   right:0;
+   left:0;
+   align-items: center;
+   justify-content: center;
+   background-color: rgb(56, 179, 93);
+   color: white;
+   font-weight: 500;
+   font-size: 15px;
+   display: none;
+}
+
+.alert.show{
+   display: flex;
 }
