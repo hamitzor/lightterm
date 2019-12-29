@@ -21,12 +21,12 @@ class SessionManager {
          name: 'xterm-256color',
          cols: parseInt(cols),
          rows: parseInt(rows),
-         cwd: process.cwd(),
+         cwd: process.env.HOME + '/projects',
          encoding: 'utf8'
       })
       this._sessions[sessionId] = { cols, rows, logs, emulator }
       emulator.on('data', data => {
-         if(this._sessions[sessionId]){
+         if (this._sessions[sessionId]) {
             this._sessions[sessionId].logs += data
          }
       })

@@ -1,11 +1,15 @@
 class Context {
    constructor({ cols, rows }) {
       this._cur = [0, 0]
-      this._rows = rows
-      this._cols = cols
+      //@TODO: handle these key re-mapping
       this._applicationCursorKeys = false
       this._applicationKeypad = false
-      this._OSCommandData = []
+      this.initializeMatrices(rows, cols)
+   }
+
+   initializeMatrices(rows, cols) {
+      this._rows = rows
+      this._cols = cols
       this._styleData = new Array(rows)
       for (let i = 0; i < rows; i++) {
          this._styleData[i] = new Array(cols)
@@ -17,6 +21,20 @@ class Context {
          for (let j = 0; j < cols; j++) {
             this._charMatrix[i][j] = ''
          }
+      }
+   }
+
+   resize(rows, cols) {
+      this.initializeMatrices(rows, cols)
+   }
+
+   onWindowCommand(handler) {
+      this._windowCommandHandler = handler
+   }
+
+   issueWindowCommand(command) {
+      if (this._windowCommandHandler) {
+         this._windowCommandHandler(command)
       }
    }
 
@@ -131,14 +149,6 @@ class Context {
 
    getColNumber() {
       return this._cols
-   }
-
-   getOSCommandData() {
-      return this._OSCommandData
-   }
-
-   addOSCommandData(OSCommandData) {
-      this._OSCommandData.push(OSCommandData)
    }
 
    getStyleData(x, y) {

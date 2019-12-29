@@ -1,6 +1,12 @@
 const DEBUG = false
 const TERM_INDICATORS = false
-const BUFFERED_RENDERING = false
+const BUFFERED_RENDERING = true
+
+exports.createEl = str => {
+   const div = document.createElement('div')
+   div.innerHTML = str.trim()
+   return div.firstChild
+}
 
 exports.log = function (...v) {
    if (DEBUG) {

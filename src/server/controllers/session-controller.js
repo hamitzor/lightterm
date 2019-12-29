@@ -16,8 +16,7 @@ exports.resize = (req, res) => {
    res.json(
       {
          status: 'OK',
-         response: {
-         }
+         response: {}
       }
    )
 }

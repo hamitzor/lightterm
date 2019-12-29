@@ -1,4 +1,3 @@
-const controlSequenceKind = require('./control-sequence-kinds')
 const util = require('./util')
 
 class Renderer {
@@ -23,14 +22,6 @@ class Renderer {
 
    render() {
       const { w, h } = this._profileManager.getCellSize()
-      for (let i = 0; i < this._context.getOSCommandData().length; i++) {
-         if (this._context.getOSCommandData()[i][0] === controlSequenceKind.CHANGE_WINDOW_TITLE_ESCAPE) {
-            util.log('Tab title changed to ', this._context.getOSCommandData()[i][1])
-            document.title = this._context.getOSCommandData()[i][1]
-            this._context.getOSCommandData().splice(i, 1)
-         }
-      }
-
       this._root.innerHTML = ''
       let newInnerHTML = ''
 
@@ -55,7 +46,9 @@ class Renderer {
             }
             if (this._context.getStyleData(i, j) && this._context.getStyleData(i, j).length > 0) {
                this._context.getStyleData(i, j).forEach(styleData => {
-                  classList.push('term-cell-style-' + styleData)
+                  if (styleData) {
+                     classList.push('term-cell-style-' + styleData)
+                  }
                })
             }
 
@@ -74,7 +67,7 @@ class Renderer {
          }
          newInnerHTML = newInnerHTML + `</div>`
       }
-      this._root.innerHTML = newInnerHTML
+      this._root.innerHTML = newInnerHTML.trim()
    }
 }
 

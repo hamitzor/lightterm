@@ -15,21 +15,35 @@ const CHARACTER_MAP = {
    Escape: '\u001b',
    ControlC: '\x03',
    ControlD: '\x04',
-   F12: ''
+   Delete: '\u001b[3~'
 }
 
 class TerminalEmulator {
-   constructor({ termScreenEl, rows, cols, webSocket }) {
+   constructor({ profileManager, termScreenEl, rows, cols, webSocket, onBell, onTitleUpdate }) {
       this._termScreenEl = termScreenEl
       this._outputBuffer = ''
       this._renderLoop = null
-      this._profileManager = new ProfileManager()
+      this._profileManager = profileManager
       this._context = new Context({ cols, rows })
+      this._context.onWindowCommand(command => {
+         if (command[0] === 'bell') {
+            onBell()
+         }
+         else if (command[0] === 'update-title') {
+            onTitleUpdate(command[1])
+         }
+      })
       this._renderer = new Renderer({ profileManager: this._profileManager, termScreenEl, context: this._context })
       this._parser = new OutputParser({ context: this._context })
-      this._profileManager.updateStyleSheet()
-      this._url = ''
       this._ws = webSocket
+   }
+
+   getContext() {
+      return this._context
+   }
+
+   getEl() {
+      return this._termScreenEl
    }
 
    getProfileManager() {
@@ -43,9 +57,11 @@ class TerminalEmulator {
          })
 
          this._renderLoop = setInterval(() => {
-            this.refreshScreen(this._outputBuffer)
+            if (this._outputBuffer !== '') {
+               this.refreshScreen(this._outputBuffer)
+            }
             this._outputBuffer = ''
-         }, 25)
+         }, 6)
       }
       else {
          this._ws.addEventListener('message', e => {

@@ -3,14 +3,14 @@ class ProfileManager {
    constructor() {
       this._colors = [
          '#FFF',           //text
-         '#000',           //background
-         '#000',           //cursor
+         '#222',           //background
+         '#222',           //cursor
          '#FFF',             //cursor background
          '#2E3436',          //black
          '#CC0000',            //red
-         '#4E9A06',          //green
+         '#76db16',          //green
          '#C4A000',         //yellow
-         '#3465A4',           //blue
+         '#6eadff',           //blue
          '#75507B',        //magenta
          '#06989A',           //cyan
          '#D3D7CF',          //white
@@ -25,19 +25,25 @@ class ProfileManager {
       ]
 
       this._text = {
-         fontFamily: 'courier-new, courier, monospace',
-         fontSize: 14,
-         cursorBlinkInterval: 1000
+         fontFamily: 'Courier Prime',
+         fontSize: 18
       }
    }
 
-   updateColors(colors) {
-      this._colors = { ...this._colors, ...colors }
+   getPalette() {
       return this._colors
    }
 
-   updateText(text) {
-      this._text = { ...this._text, ...text }
+   getTextInformation() {
+      return this._text
+   }
+
+   updatePalette(index, val) {
+      this._colors[index] = val
+   }
+
+   updateTextInformation(update) {
+      this._text = { ...this._text, ...update }
       return this._text
    }
 
@@ -49,7 +55,7 @@ class ProfileManager {
          background-color: ${this._colors[1]};
          font-family: ${this._text.fontFamily};
          font-size: ${this._text.fontSize}px;
-         padding: 0;
+         padding: 2px;
          cursor: default;
          outline: none;
       }
@@ -84,40 +90,9 @@ class ProfileManager {
       }
 
       content = content + `
-      .term-cell-style-400 {
-         color: ${this._colors[0]};
-      }`
-
-      content = content + `
-      .term-cell-style-401 {
-         font-weight: normal;
-      }
-      .term-cell-style-402 {
-         font-style: normal;
-      }
-      .term-cell-style-403 {
-         text-decoration: none;
-      }
-      .term-cell-style-405 {
-         background-color: transparent;
-      }`
-
-      content = content + `
-      .term-cell-style-404 {
-         font-family: ${this._text.fontFamily};
-      }`
-
-
-      content = content + `
-      @keyframes blinker {
-         0% {color: ${this._colors[3]};background-color: ${this._colors[2]};}
-         50% {color: ${this._colors[2]};background-color: ${this._colors[3]};}
-         100% {color: ${this._colors[3]};background-color: ${this._colors[2]};}
-       }
       .term-cursor-cell {
          color: ${this._colors[2]};
          background-color: ${this._colors[3]};
-         /*animation: blinker ${this._text.cursorBlinkInterval}ms steps(1, end) infinite*/
       }`
 
       document.getElementById('term-style').appendChild(document.createTextNode(content))
