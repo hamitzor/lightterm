@@ -100,7 +100,7 @@ class TerminalManager {
       for (let i = 0; i < files.length; i++) {
          formData.append('file' + i, files[i])
       }
-      await fetch(`http://localhost:${config.port}/file`, {
+      await fetch(`http://${config.hostname}:${config.port}/file`, {
          method: 'POST',
          body: formData
       })

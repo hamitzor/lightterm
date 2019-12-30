@@ -56,7 +56,7 @@ class TerminalEmulator {
       const newRow = this._profileManager.getRowNumber()
       const newCol = this._profileManager.getColNumber()
       this._context.resize(newRow, newCol)
-      await fetch(`http://localhost:${config.port}/session/resize/${this._sessionId}/${newRow}/${newCol}`)
+      await fetch(`http://${config.hostname}:${config.port}/session/resize/${this._sessionId}/${newRow}/${newCol}`)
    }
 
    /* Return session id */
@@ -66,10 +66,10 @@ class TerminalEmulator {
 
    /* Create a session using Web API */
    async createSession() {
-      const res = await fetch(`http://localhost:${config.port}/session/create/${this._profileManager.getRowNumber()}/${this._profileManager.getColNumber()}`)
+      const res = await fetch(`http://${config.hostname}:${config.port}/session/create/${this._profileManager.getRowNumber()}/${this._profileManager.getColNumber()}`)
       const { response: { sessionId } } = await res.json()
       this._sessionId = sessionId
-      this._ws = new WebSocket(`ws://localhost:${config.port}/session/connect/${this._sessionId}`)
+      this._ws = new WebSocket(`ws://${config.hostname}:${config.port}/session/connect/${this._sessionId}`)
       this._ws.addEventListener('open', () => {
          this.connect()
          this.focus()
