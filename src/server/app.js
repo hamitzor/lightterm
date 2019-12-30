@@ -26,7 +26,7 @@ const initializeApp = () => {
    app.ws('/session/connect/:sessionId', sessionControllers.connect)
 
    /* Start listening on the specified port in config.json file */
-   app.listen(config.port, () => console.log('Light Terminal Web API is online at http://localhost:' + config.port))
+   app.listen(config.port, () => console.log('lightterm Web API is online at http://localhost:' + config.port))
 }
 
 /* Start server-side application */

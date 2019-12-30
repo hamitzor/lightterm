@@ -1,4 +1,4 @@
-# light-terminal
+# lightterm
 
 A browser based xterm emulator.
 

@@ -112,7 +112,7 @@ class OutputParser {
             }
 
             /* Check if the sequence is a window manipulation sequence. 
-            If so, just skip, this feature is not yet implemented in light-terminal */
+            If so, just skip, this feature is not yet implemented in lightterm */
             if (match = new RegExp(/^\u001b\[(\d*);(\d*);(\d*)t$/gmu).exec(symbol)) {
                util.log('WINDOW MANIPULATION!')
                controlSequenceFlag = false
@@ -120,7 +120,7 @@ class OutputParser {
             }
 
             /* Check if the sequence is a application keypad sequence. 
-            If so, just skip, this feature is not yet implemented in light-terminal  */
+            If so, just skip, this feature is not yet implemented in lightterm  */
             if (match = new RegExp(/^\u001b=$/gmu).exec(symbol)) {
                util.log('APPLICATION KEYPAD')
                controlSequenceFlag = false
@@ -128,7 +128,7 @@ class OutputParser {
             }
 
             /* Check if the sequence is a normal keypad sequence. 
-            If so, just skip, this feature is not yet implemented in light-terminal  */
+            If so, just skip, this feature is not yet implemented in lightterm  */
             if (match = new RegExp(/^\u001b>$/gmu).exec(symbol)) {
                util.log('NORMAL KEYPAD')
                controlSequenceFlag = false
@@ -136,7 +136,7 @@ class OutputParser {
             }
 
             /* Check if the sequence is a application cursor keys sequence. 
-            If so, just skip, this feature is not yet implemented in light-terminal  */
+            If so, just skip, this feature is not yet implemented in lightterm  */
             if (match = new RegExp(/^\u001b\[\?(\d*)h$/gmu).exec(symbol)) {
                controlSequenceFlag = false
                util.log('APPLICATION CURSOR KEYS!')
@@ -144,7 +144,7 @@ class OutputParser {
             }
 
             /* Check if the sequence is a DEC private mode sequence. 
-            If so, just skip, this feature is not yet implemented in light-terminal  */
+            If so, just skip, this feature is not yet implemented in lightterm  */
             if (match = new RegExp(/^\u001b\[\?(\d*)l$/gmu).exec(symbol)) {
                util.log('DEC PRIVATE MODE RESET!')
                controlSequenceFlag = false
@@ -152,7 +152,7 @@ class OutputParser {
             }
 
             /* Check if the sequence is an alternate screen sequence. 
-            If so, just skip, this feature is not yet implemented in light-terminal  */
+            If so, just skip, this feature is not yet implemented in lightterm  */
             if (match = new RegExp(/^\u001b\[\?1049(h|l)$/gmu).exec(symbol)) {
                util.log('ALTERNATE SCREEN!')
                controlSequenceFlag = false
