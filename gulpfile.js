@@ -1,3 +1,4 @@
+/* gulpfile for gulp application to run. gulp is used for compiling *.scss files into *.css files */
 const { watch, src, dest } = require('gulp')
 const sass = require('gulp-sass')
 const rename = require('gulp-rename')

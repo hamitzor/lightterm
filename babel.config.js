@@ -1,3 +1,6 @@
+/* Babel configuration. Babel is used because some advanced features of JavaScript is used both in client-side
+and server-side application. An example of these advanced features is 'arrow functions' */
+
 module.exports = function (api) {
    api.cache(true)
 
