@@ -31,6 +31,7 @@ class TerminalEmulator {
       this._termScreenEl = termScreenEl
       this._outputBuffer = ''
       this._profileManager = profileManager
+      this._title = '~'
 
       /* Create a context for the emulator */
       this._context = new Context({ rows: this._profileManager.getRowNumber(), cols: this._profileManager.getColNumber() })
@@ -42,8 +43,19 @@ class TerminalEmulator {
          }
          else if (command[0] === 'update-title') {
             onTitleUpdate(command[1], this)
+            this._title = command[1]
          }
       })
+
+      /* Add 'drop file' event listener */
+      this._termScreenEl.addEventListener('drop', e => {
+         e.preventDefault()
+         const files = e.dataTransfer.files
+         /* Tab's title is used to decide where to upload the file */
+         const targetPath = new RegExp(/.*@.*:(.*)/g).exec(this._title)[1]
+         this.uploadFile(targetPath, files)
+      })
+
       /* Create a Renderer instance for emulator */
       this._renderer = new Renderer({ profileManager: this._profileManager, termScreenEl, context: this._context })
       /* Create a OutputParser instance for emulator */
@@ -57,6 +69,27 @@ class TerminalEmulator {
       const newCol = this._profileManager.getColNumber()
       this._context.resize(newRow, newCol)
       await fetch(`http://${config.hostname}:${config.port}/session/resize/${this._sessionId}/${newRow}/${newCol}`)
+   }
+
+   /* Upload a file to the remote machine using HTTP. This is called when user drops a file into the tab screen. 
+   Show information alert after upload. */
+   async uploadFile(targetPath, files) {
+      const formData = new FormData()
+      formData.append('targetPath', targetPath)
+      for (let i = 0; i < files.length; i++) {
+         formData.append('file' + i, files[i])
+      }
+      await fetch(`http://${config.hostname}:${config.port}/file`, {
+         method: 'POST',
+         body: formData
+      })
+
+      const alertEl = document.getElementById('alert')
+      alertEl.innerHTML = 'Uploaded files successfully!'
+      alertEl.classList.add('show')
+      setTimeout(() => {
+         alertEl.classList.remove('show')
+      }, 2000)
    }
 
    /* Return session id */

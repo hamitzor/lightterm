@@ -92,25 +92,6 @@ class TerminalManager {
       this.updateTabTitleStyle()
    }
 
-   /* Upload a file to the remote machine using HTTP. This is called when user drops a file into the tab screen. 
-   Show information alert after upload. */
-   async uploadFile(targetPath, files) {
-      const formData = new FormData()
-      formData.append('targetPath', targetPath)
-      for (let i = 0; i < files.length; i++) {
-         formData.append('file' + i, files[i])
-      }
-      await fetch(`http://${config.hostname}:${config.port}/file`, {
-         method: 'POST',
-         body: formData
-      })
-      this._alertEl.innerHTML = 'Uploaded files successfully!'
-      this._alertEl.classList.add('show')
-      setTimeout(() => {
-         this._alertEl.classList.remove('show')
-      }, 2000)
-   }
-
    /* Change the active tab. This is called when user clicks on of tab's title */
    changeTab(index) {
       this._activeTab = index
@@ -174,7 +155,6 @@ class TerminalManager {
          /* Update title when 'update title command' is given by emulator */
          onTitleUpdate: (title, emulator) => {
             this.updateTabTitleText(this.getTabIndex(emulator.getSessionId()), title)
-            this._tabs[this.getTabIndex(emulator.getSessionId())].title = title
          }
       })
 
@@ -182,7 +162,7 @@ class TerminalManager {
       await emulator.createSession()
 
       /* Add new tab's data */
-      this._tabs.push({ sessionId: emulator.getSessionId(), emulator, title: '~' })
+      this._tabs.push({ sessionId: emulator.getSessionId(), emulator })
 
       /* Create a button element to be used in closing the tab and add the event listener accordingly */
       const closeBtnEl = util.createEl('<button class="tab-title-close-btn">&#215;</button>')
@@ -205,15 +185,6 @@ class TerminalManager {
       this.updateActiveTabTitle()
       this.updateTabTitleStyle()
       this.updateActiveTab()
-
-      /* Add 'drop file' event listener */
-      termScreenEl.addEventListener('drop', e => {
-         e.preventDefault()
-         const files = e.dataTransfer.files
-         /* Tab's title is used to decide where to upload the file */
-         const targetPath = new RegExp(/.*@.*:(.*)/g).exec(this._tabs[this.getTabIndex(emulator.getSessionId())].title)[1]
-         this.uploadFile(targetPath, files)
-      })
 
       /* A fix to prevent browser from opening the dragged file */
       termScreenEl.addEventListener('dragover', e => {
