@@ -4,7 +4,9 @@ const OutputParser = require('./output-parser')
 const util = require('../util')
 const config = require('../../../../config.json')
 
-/* Character map that transforms pressed keys on client-side to actual sequences and characters for the emulator */
+/* Character map that transforms pressed keys on client-side to actual sequences and characters for the emulator.
+Normal characters like a,b,0,1,-,_,? are not mapped here because they are directly sent to the emulator. 
+Only 12 special keys are handled in emulator in the context of this project. */
 const CHARACTER_MAP = {
    Enter: '\n',
    Backspace: '\u0008',
