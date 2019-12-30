@@ -169,7 +169,7 @@ class OutputParser {
                }
                else if (match[0] === '1') {
                   util.log('CLEAR SCREEN ABOVE!')
-                  this._context.removeFromCursorToBeginnig()
+                  this._context.removeFromBeginningToCursor()
                }
                else if (match[0] === '2') {
                   util.log('CLEAR ALL SCREEN!')
@@ -194,15 +194,15 @@ class OutputParser {
                controlSequenceFlag = false
                if (match[0] === '0' || match[0] === '') {
                   util.log('CLEAR LINE TO END')
-                  this._context.removeFromCursorToLineEnd(this._context.getCursorX())
+                  this._context.removeFromCursorToLineEnd()
                }
                else if (match[0] === '1') {
                   util.log('CLEAR LINE FROM BEGINNING')
-                  this._context.removeFromBeginningToCursor(this._context.getCursorX())
+                  this._context.removeFromLineBeginningToCursor()
                }
                else if (match[0] === '2') {
                   util.log('CLEAR LINE')
-                  this._context.removeLine(this._context.getCursorX())
+                  this._context.removeLine()
                }
                continue
             }

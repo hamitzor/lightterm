@@ -60,9 +60,14 @@ class Context {
    }
 
    /* Set the value of cells between the cursor and the first cell in the screen, to empty string */
-   removeFromBeginningToCursor(n) {
-      for (let i = 0; i < this.getCursorY() + 1; i++) {
-         this.set(n, i, '')
+   removeFromBeginningToCursor() {
+      for (let i = this.getCursorY(); i < this.getColNumber(); i++) {
+         this.set(this.getCursorX(), i, '')
+      }
+      for (let i = this.getCursorX(); i > -1; i--) {
+         for (let j = 0; j < this.getColNumber(); j++) {
+            this.set(i, j, '')
+         }
       }
    }
 
@@ -78,22 +83,17 @@ class Context {
       }
    }
 
-   /* Set the value of cells between the cursor and the first cell in the line 'n', to empty string */
-   removeFromCursorToBeginning(n) {
-      for (let i = this.getCursorY(); i < this.getColNumber(); i++) {
-         this.set(n, i, '')
-      }
-      for (let i = this.getCursorX(); i > -1; i--) {
-         for (let j = 0; j < this.getColNumber(); j++) {
-            this.set(i, j, '')
-         }
+   /* Set the value of cells between the cursor and the first cell in the line, to empty string */
+   removeFromLineBeginningToCursor() {
+      for (let i = 0; i < this.getCursorY() + 1; i++) {
+         this.set(this.getCursorX(), i, '')
       }
    }
 
-   /* Set the value of cells between the cursor and the last cell in the line 'n', to empty string */
-   removeFromCursorToLineEnd(n) {
+   /* Set the value of cells between the cursor and the last cell in the line, to empty string */
+   removeFromCursorToLineEnd() {
       for (let i = this.getCursorY(); i < this.getColNumber(); i++) {
-         this.set(n, i, '')
+         this.set(this.getCursorX(), i, '')
       }
    }
 
