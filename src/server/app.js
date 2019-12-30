@@ -1,3 +1,4 @@
+/* Server-side application */
 const express = require('express')
 const rootRouter = require('./routers')
 const path = require('path')
@@ -28,4 +29,5 @@ const initializeApp = () => {
    app.listen(config.port, () => console.log('Light Terminal Web API is online at http://localhost:' + config.port))
 }
 
-module.exports = initializeApp
+/* Start server-side application */
+initializeApp()

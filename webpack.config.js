@@ -2,7 +2,7 @@ const path = require('path')
 
 const clientConfig = {
    context: path.resolve(__dirname, 'src/client/js'),
-   entry: './index',
+   entry: './app.js',
    devtool: 'source-map',
    output: {
       path: path.resolve(__dirname, 'src/client/public'),
