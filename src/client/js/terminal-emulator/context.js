@@ -1,11 +1,11 @@
-/* Class that manages 'cursor', 'styling information', 'value' of each cell
+/* Class that manages 'cursor', 'styling information', the 'character value' of each cell
 in the screen and window commands. It holds a character matrix, where each element 
 represents  the value of the 'cell' at location (x,y) in the screen. A 'cell' contains 
 only one character.  It also holds a style data matrix, where each element represents
 the styling of the 'cell' at location (x,y). It manages the position of the cursor.
 It is also responsible for managing the window commands like 'play bell sound', 'change window 
 title', etc.). This class is not responsible for rendering or playing sounds, it just acts like 
-a state holder, or in other words, a context.*/
+a state holder, or in other words, a context. */
 
 class Context {
    constructor({ cols, rows }) {
