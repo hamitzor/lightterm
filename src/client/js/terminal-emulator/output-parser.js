@@ -111,6 +111,22 @@ class OutputParser {
                continue
             }
 
+            /* Check if the sequence is a set mode sequence. 
+            If so, just skip, this feature is not yet implemented in lightterm */
+            if (match = new RegExp(/^\u001b\[\dh$/gmu).exec(symbol)) {
+               util.log('SET MODE!')
+               controlSequenceFlag = false
+               continue
+            }
+
+            /* Check if the sequence is a reset mode sequence. 
+            If so, just skip, this feature is not yet implemented in lightterm */
+            if (match = new RegExp(/^\u001b\[\dl$/gmu).exec(symbol)) {
+               util.log('RESET MODE!')
+               controlSequenceFlag = false
+               continue
+            }
+
             /* Check if the sequence is a window manipulation sequence. 
             If so, just skip, this feature is not yet implemented in lightterm */
             if (match = new RegExp(/^\u001b\[(\d*);(\d*);(\d*)t$/gmu).exec(symbol)) {
@@ -132,6 +148,39 @@ class OutputParser {
             if (match = new RegExp(/^\u001b>$/gmu).exec(symbol)) {
                util.log('NORMAL KEYPAD')
                controlSequenceFlag = false
+               continue
+            }
+
+            /* Check if the sequence is a save cursor sequence. If so, save cursor position in context */
+            if (match = new RegExp(/^\u001b7$/gmu).exec(symbol)) {
+               util.log('SAVE CURSOR POSITION')
+               controlSequenceFlag = false
+               this._context.saveCur()
+               continue
+            }
+
+            /* Check if the sequence is a restore cursor sequence. If so, restore cursor position in context */
+            if (match = new RegExp(/^\u001b8$/gmu).exec(symbol)) {
+               util.log('RESTORE CURSOR POSITION')
+               controlSequenceFlag = false
+               this._context.restoreCur()
+               continue
+            }
+
+            /* Check if the sequence is a change cursor position sequence. If so, change cursor position in context */
+            if (match = new RegExp(/^\u001b\[(\d*);(\d*)f$/gmu).exec(symbol)) {
+               match.shift()
+               controlSequenceFlag = false
+               let x = parseInt(match[0]), y = 1
+               if (match[1]) {
+                  y = parseInt(match[1])
+               }
+
+               if (y === 0) {
+                  y = 1
+               }
+               util.log('CHANGE CURSOR POSITION', x - 1, y - 1)
+               this._context.changeCursorPosition(x - 1, y - 1)
                continue
             }
 
@@ -302,7 +351,7 @@ class OutputParser {
                }
                else {
                   /* if character is none of above, assume that it is a printable character */
-                  
+
                   util.log('NORMAL SYMBOLE', symbol === ' ' ? 'SPACE' : symbol)
 
                   /* Eventually, update context with global styling data of cell (x,y) */
@@ -332,7 +381,6 @@ class OutputParser {
          if (controlSequenceFlag && symbol.length > 30) {
             controlSequenceFlag = false
             util.log('UNKNOWN SYMBOL', symbol)
-            alert('unknown symbole ' + symbol)
          }
       }
    }

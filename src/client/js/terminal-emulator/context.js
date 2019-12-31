@@ -11,8 +11,26 @@ class Context {
    constructor({ cols, rows }) {
       /* Initialize cursor at top left. (x,y) = (0,0) */
       this._cur = [0, 0]
-
+      this._savedCur = [0, 0]
       this.initializeMatrices(rows, cols)
+   }
+
+   /* Change cursor's position to (x,y) */
+   changeCursorPosition(x, y) {
+      this._cur[0] = x
+      this._cur[1] = y
+   }
+
+   /* Restore saved cursor position */
+   restoreCur() {
+      this._cur[0] = this._savedCur[0]
+      this._cur[1] = this._savedCur[1]
+   }
+
+   /* Save cursor position */
+   saveCur() {
+      this._savedCur[0] = this._cur[0]
+      this._savedCur[1] = this._cur[1]
    }
 
    /* Initialize character matrix and style data matrix with respect to given column and row number */
@@ -55,6 +73,7 @@ class Context {
       for (let i = 0; i < this.getRowNumber(); i++) {
          for (let j = 0; j < this.getColNumber(); j++) {
             this.set(i, j, '')
+            this.setStyleData(i, j, null)
          }
       }
    }
@@ -63,10 +82,12 @@ class Context {
    removeFromBeginningToCursor() {
       for (let i = this.getCursorY(); i < this.getColNumber(); i++) {
          this.set(this.getCursorX(), i, '')
+         this.setStyleData(this.getCursorX(), i, null)
       }
       for (let i = this.getCursorX(); i > -1; i--) {
          for (let j = 0; j < this.getColNumber(); j++) {
             this.set(i, j, '')
+            this.setStyleData(i, j, null)
          }
       }
    }
@@ -75,10 +96,12 @@ class Context {
    removeFromCursorToEnd() {
       for (let i = this.getCursorY(); i < this._cols; i++) {
          this.set(this.getCursorX(), i, '')
+         this.setStyleData(this.getCursorX(), i, null)
       }
       for (let i = this.getCursorX(); i < this._rows; i++) {
          for (let j = 0; j < this._cols; j++) {
             this.set(i, j, '')
+            this.setStyleData(i, j, null)
          }
       }
    }
@@ -87,6 +110,7 @@ class Context {
    removeFromLineBeginningToCursor() {
       for (let i = 0; i < this.getCursorY() + 1; i++) {
          this.set(this.getCursorX(), i, '')
+         this.setStyleData(this.getCursorX(), i, null)
       }
    }
 
@@ -94,13 +118,15 @@ class Context {
    removeFromCursorToLineEnd() {
       for (let i = this.getCursorY(); i < this.getColNumber(); i++) {
          this.set(this.getCursorX(), i, '')
+         this.setStyleData(this.getCursorX(), i, null)
       }
    }
 
-   /* Set the values of all cells in the line 'n' to empty string */
-   removeLine(n) {
+   /* Set the value of all cells in the line, to empty string */
+   removeLine() {
       for (let i = 0; i < this.getColNumber(); i++) {
-         this.set(n, i, '')
+         this.set(this.getCursorX(), i, '')
+         this.setStyleData(this.getCursorX(), i, null)
       }
    }
 
@@ -133,9 +159,11 @@ class Context {
          for (let j = this.getCursorY(); j < this._cols; j++) {
             if (j < this._cols - 1) {
                this.set(this.getCursorX(), j, this.get(this.getCursorX(), j + 1))
+               this.setStyleData(this.getCursorX(), j, this.getStyleData(this.getCursorX(), j + 1))
             }
             else {
                this.set(this.getCursorX(), j, (this.getCursorX() < this._rows - 1) ? this.get(this.getCursorX() + 1, 0) : '   ')
+               this.setStyleData(this.getCursorX(), j, (this.getCursorX() < this._rows - 1) ? this.getStyleData(this.getCursorX() + 1, 0) : null)
             }
          }
 
@@ -143,9 +171,11 @@ class Context {
             for (let j = 0; j < this._cols; j++) {
                if (j < this._cols - 1) {
                   this.set(i, j, this.get(i, j + 1))
+                  this.setStyleData(i, j, this.getStyleData(i, j + 1))
                }
                else {
                   this.set(i, j, (i < this._rows - 1) ? this.get(i + 1, 0) : '')
+                  this.setStyleData(i, j, (i < this._rows - 1) ? this.getStyleData(i + 1, 0) : '')
                }
             }
          }

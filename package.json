@@ -9,7 +9,7 @@
    "scripts": {
       "scss": "gulp",
       "start": "nodemon -r source-map-support/register src/server/app.js",
-      "watch": "webpack --watch --mode development"
+      "watch": "([[ -f ./config.json ]] || (cp ./config-default.json ./config.json)) && webpack --watch --mode development"
    },
    "dependencies": {
       "@babel/preset-env": "^7.7.1",
