@@ -1,5 +1,4 @@
 const util = require('./util')
-const config = require('../../../config.json')
 const ProfileManager = require('./terminal-emulator/profile-manager')
 const TerminalEmulator = require('./terminal-emulator/terminal-emulator')
 
@@ -7,12 +6,11 @@ const TerminalEmulator = require('./terminal-emulator/terminal-emulator')
 class TerminalManager {
 
 
-   constructor({ tabScreensContainerEl, tabTitlesEl, newTabBtnEl, alertEl }) {
+   constructor({ tabScreensContainerEl, tabTitlesEl, newTabBtnEl }) {
       /* It needs some elements like, a container element for tab screens, tab titles etc. */
       this._tabScreensContainerEl = tabScreensContainerEl
       this._tabTitlesEl = tabTitlesEl
       this._newTabBtnEl = newTabBtnEl
-      this._alertEl = alertEl
       /* It instantiates ProfileManager to be used in emulators it creates later */
       this._profileManager = new ProfileManager()
       /* call updateStyleSheet to update stylesheet used in rendering in emulators */

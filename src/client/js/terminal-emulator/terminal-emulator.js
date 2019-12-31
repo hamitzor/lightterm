@@ -51,9 +51,12 @@ class TerminalEmulator {
       this._termScreenEl.addEventListener('drop', e => {
          e.preventDefault()
          const files = e.dataTransfer.files
-         /* Tab's title is used to decide where to upload the file */
-         const targetPath = new RegExp(/.*@.*:(.*)/g).exec(this._title)[1]
-         this.uploadFile(targetPath, files)
+         this.uploadFile(files)
+      })
+
+      /* A fix to prevent browser from opening the dragged file */
+      this._termScreenEl.addEventListener('dragover', e => {
+         e.preventDefault()
       })
 
       /* Create a Renderer instance for emulator */
@@ -73,9 +76,10 @@ class TerminalEmulator {
 
    /* Upload a file to the remote machine using HTTP. This is called when user drops a file into the tab screen. 
    Show information alert after upload. */
-   async uploadFile(targetPath, files) {
+   async uploadFile(files) {
       const formData = new FormData()
-      formData.append('targetPath', targetPath)
+      /* Title is used to decide where to upload the file */
+      formData.append('targetPath', new RegExp(/.*@.*:(.*)/g).exec(this._title)[1])
       for (let i = 0; i < files.length; i++) {
          formData.append('file' + i, files[i])
       }
