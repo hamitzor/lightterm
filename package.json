@@ -10,8 +10,8 @@
       "gulp-watch": "gulp -f ./gulpfile-watch.js",
       "start": "node -r source-map-support/register src/server/app.js",
       "start-watch": "nodemon -r source-map-support/register src/server/app.js",
-      "build": "([ -f ./config.json ] || (cp ./config-default.json ./config.json && echo 'config.json configuration file is not found, copying the original one...')) && webpack --mode production && gulp -f ./gulpfile.js",
-      "build-watch": "([ -f ./config.json ] || (cp ./config-default.json ./config.json && echo 'config.json configuration file is not found, copying the original one...')) && webpack --watch --mode development"
+      "build": "([ -f ./config.json ] || (cp ./config-default.json ./config.json && echo 'config.json configuration file is not found, copying the default one...')) && webpack --mode production && gulp -f ./gulpfile.js",
+      "build-watch": "([ -f ./config.json ] || (cp ./config-default.json ./config.json && echo 'config.json configuration file is not found, copying the default one...')) && webpack --watch --mode development"
    },
    "dependencies": {
       "@babel/preset-env": "^7.7.1",
