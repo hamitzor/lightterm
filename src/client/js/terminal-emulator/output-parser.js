@@ -180,7 +180,8 @@ class OutputParser {
                   y = 1
                }
                util.log('CHANGE CURSOR POSITION', x - 1, y - 1)
-               this._context.changeCursorPosition(x - 1, y - 1)
+               this._context.setCursorX(x - 1)
+               this._context.setCursorY(y - 1)
                continue
             }
 

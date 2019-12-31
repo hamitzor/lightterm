@@ -15,12 +15,6 @@ class Context {
       this.initializeMatrices(rows, cols)
    }
 
-   /* Change cursor's position to (x,y) */
-   changeCursorPosition(x, y) {
-      this._cur[0] = x
-      this._cur[1] = y
-   }
-
    /* Restore saved cursor position */
    restoreCur() {
       this._cur[0] = this._savedCur[0]
