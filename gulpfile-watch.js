@@ -1,5 +1,6 @@
-/* gulpfile for gulp application to run. gulp is used for compiling *.scss files into *.css files. this script runs once. */
-const { src, dest } = require('gulp')
+/* gulpfile for gulp application to run. gulp is used for compiling *.scss files into *.css files. this script 
+runs everytime a *.scss file changes */
+const { watch, src, dest } = require('gulp')
 const sass = require('gulp-sass')
 const rename = require('gulp-rename')
 const cleanCss = require('gulp-clean-css')
@@ -17,4 +18,6 @@ const sassTask = () => {
       .pipe(dest(minCssDir))
 }
 
-exports.default = sassTask
+exports.default = () => {
+   watch(sassFiles, { ignoreInitial: false }, sassTask)
+}
