@@ -4,7 +4,7 @@ class ProfileManager {
    constructor() {
       this._cols = 120/* Column number */
       this._rows = 35/* Row number */
-
+      this._colored = false
       this._colors = [
          '#ffffff',/* Text color. */
          '#191919',/* Background color. */
@@ -29,9 +29,17 @@ class ProfileManager {
       ]
 
       this._text = {
-         fontFamily: 'monospace',
-         fontSize: 18
+         fontFamily: 'Courier Prime',
+         fontSize: 20
       }
+   }
+
+   setColored(colored) {
+      this._colored = colored
+   }
+
+   isColored() {
+      return this._colored
    }
 
    getColNumber() {
@@ -111,10 +119,33 @@ class ProfileManager {
       }
 
       content = content + `
+
+      @keyframes blinker {
+         0% { 
+            color: ${this._colors[2]};
+            background-color: ${this._colors[3]};
+         }
+         50% {
+            color: ${this._colors[3]};
+            background-color: ${this._colors[2]};
+         }
+         100% {
+            color: ${this._colors[2]};
+            background-color: ${this._colors[3]};
+         }
+      }
+
       .term-cursor-cell {
          color: ${this._colors[2]};
          background-color: ${this._colors[3]};
-      }`
+         animation: blinker steps(1) 500ms infinite alternate
+      }
+      
+      .term-cursor-cell.stop-animation {
+         animation: none
+      }
+
+      `
 
       document.getElementById('term-style').appendChild(document.createTextNode(content))
    }

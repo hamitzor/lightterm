@@ -29,23 +29,25 @@ const initializeApplication = async () => {
    const settingsOpenBtnEl = document.getElementById('settings-open-btn')
    const settingsCloseBtnEl = document.getElementById('settings-close-btn')
    const settingsSaveBtnEl = document.getElementById('settings-save-btn')
+   const coloredSelectEl = document.getElementById('settings-colored')
    const rowSettingInputEl = document.getElementById('settings-input-row')
    const colSettingInputEl = document.getElementById('settings-input-col')
    const fontSizeSettingInputEl = document.getElementById('settings-input-font-size')
-   const fontFamilySettingInputEl = document.getElementById('settings-input-font-family')
+   const fontFamilySettingSelectEl = document.getElementById('settings-input-font-family')
    const colorSettingEls = []
 
    for (let i = 0; i < 20; i++) {
       colorSettingEls[i] = document.getElementById(i)
    }
 
-   fontFamilySettingInputEl.innerHTML = fontNames.map(f => `<option value="${f}">${f}</option>`).join('')
+   fontFamilySettingSelectEl.innerHTML = fontNames.map(f => `<option value="${f}">${f}</option>`).join('')
 
    /* Read data from profime manager and fill settings accordingly */
+   coloredSelectEl.value = profileManager.isColored() ? 'Enabled' : 'Disabled'
    rowSettingInputEl.value = profileManager.getRowNumber()
    colSettingInputEl.value = profileManager.getColNumber()
    fontSizeSettingInputEl.value = profileManager.getTextInformation().fontSize
-   fontFamilySettingInputEl.value = profileManager.getTextInformation().fontFamily
+   fontFamilySettingSelectEl.value = profileManager.getTextInformation().fontFamily
    colorSettingEls.forEach((el, i) => {
       el.value = profileManager.getPalette()[i]
    })
@@ -58,15 +60,17 @@ const initializeApplication = async () => {
       settingsEl.classList.add('hide')
    })
 
-    /* When user saves the settings, apply changes to terminal manager, and force a screen refresh */
+   /* When user saves the settings, apply changes to terminal manager, and force a screen refresh */
    settingsSaveBtnEl.addEventListener('click', () => {
+      profileManager.setColored(coloredSelectEl.value === 'Enabled')
+
       if (parseInt(rowSettingInputEl.value) !== profileManager.getRowNumber() || parseInt(colSettingInputEl.value) !== profileManager.getColNumber()) {
          terminalManager.resize(parseInt(rowSettingInputEl.value), parseInt(colSettingInputEl.value))
       }
 
       profileManager.updateTextInformation({
          fontSize: parseInt(fontSizeSettingInputEl.value),
-         fontFamily: fontFamilySettingInputEl.value
+         fontFamily: fontFamilySettingSelectEl.value
       })
 
       colorSettingEls.forEach((el, i) => {

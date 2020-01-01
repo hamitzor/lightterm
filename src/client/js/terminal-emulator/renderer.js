@@ -38,7 +38,7 @@ class Renderer {
             /* If context has a styling data at cell (x,y), iterate over it, and add appropriate css classes */
             if (this._context.getStyleData(y, x) && this._context.getStyleData(y, x).length > 0) {
                this._context.getStyleData(y, x).forEach(styleData => {
-                  if (styleData) {
+                  if (styleData && this._profileManager.isColored()) {
                      classList.push('term-cell-style-' + styleData)
                   }
                })

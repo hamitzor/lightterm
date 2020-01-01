@@ -164,6 +164,10 @@ class TerminalEmulator {
 
 
       this._termScreenEl.addEventListener('keydown', e => {
+         this._termScreenEl.getElementsByClassName('term-cursor-cell').forEach(el => {
+            el.classList.add('stop-animation')
+         })
+
          const ctrl = e.ctrlKey ? e.ctrlKey : (((e.keyCode || e.which) === 17) ? true : false)
 
          /* If user performed crtl+v, copy the clipboard into terminal screen */
