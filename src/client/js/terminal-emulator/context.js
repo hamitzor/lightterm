@@ -31,9 +31,9 @@ class Context {
    initializeMatrices(rows, cols) {
       this._rows = rows
       this._cols = cols
-      this._styleData = new Array(rows)
+      this._styleDataMatrix = new Array(rows)
       for (let i = 0; i < rows; i++) {
-         this._styleData[i] = new Array(cols)
+         this._styleDataMatrix[i] = new Array(cols)
       }
 
       this._charMatrix = new Array(rows)
@@ -62,64 +62,64 @@ class Context {
       }
    }
 
-   /* Set all cell's value to empty string. */
+   /* Set all cell's value to empty string and remove styling data. */
    removeAll() {
       for (let i = 0; i < this.getRowNumber(); i++) {
          for (let j = 0; j < this.getColNumber(); j++) {
-            this.set(i, j, '')
+            this.setChar(i, j, '')
             this.setStyleData(i, j, null)
          }
       }
    }
 
-   /* Set the value of cells between the cursor and the first cell in the screen, to empty string */
+   /* Set the value of cells between the cursor and the first cell in the screen, to empty string and remove styling data */
    removeFromBeginningToCursor() {
       for (let i = this.getCursorY(); i < this.getColNumber(); i++) {
-         this.set(this.getCursorX(), i, '')
+         this.setChar(this.getCursorX(), i, '')
          this.setStyleData(this.getCursorX(), i, null)
       }
       for (let i = this.getCursorX(); i > -1; i--) {
          for (let j = 0; j < this.getColNumber(); j++) {
-            this.set(i, j, '')
+            this.setChar(i, j, '')
             this.setStyleData(i, j, null)
          }
       }
    }
 
-   /* Set the value of cells between the cursor and the last cell in the screen, to empty string */
+   /* Set the value of cells between the cursor and the last cell in the screen, to empty string and remove styling data */
    removeFromCursorToEnd() {
       for (let i = this.getCursorY(); i < this._cols; i++) {
-         this.set(this.getCursorX(), i, '')
+         this.setChar(this.getCursorX(), i, '')
          this.setStyleData(this.getCursorX(), i, null)
       }
       for (let i = this.getCursorX(); i < this._rows; i++) {
          for (let j = 0; j < this._cols; j++) {
-            this.set(i, j, '')
+            this.setChar(i, j, '')
             this.setStyleData(i, j, null)
          }
       }
    }
 
-   /* Set the value of cells between the cursor and the first cell in the line, to empty string */
+   /* Set the value of cells between the cursor and the first cell in the line, to empty string and remove styling data */
    removeFromLineBeginningToCursor() {
       for (let i = 0; i < this.getCursorY() + 1; i++) {
-         this.set(this.getCursorX(), i, '')
+         this.setChar(this.getCursorX(), i, '')
          this.setStyleData(this.getCursorX(), i, null)
       }
    }
 
-   /* Set the value of cells between the cursor and the last cell in the line, to empty string */
+   /* Set the value of cells between the cursor and the last cell in the line, to empty string and remove styling data */
    removeFromCursorToLineEnd() {
       for (let i = this.getCursorY(); i < this.getColNumber(); i++) {
-         this.set(this.getCursorX(), i, '')
+         this.setChar(this.getCursorX(), i, '')
          this.setStyleData(this.getCursorX(), i, null)
       }
    }
 
-   /* Set the value of all cells in the line, to empty string */
+   /* Set the value of all cells in the line, to empty string and remove styling data */
    removeLine() {
       for (let i = 0; i < this.getColNumber(); i++) {
-         this.set(this.getCursorX(), i, '')
+         this.setChar(this.getCursorX(), i, '')
          this.setStyleData(this.getCursorX(), i, null)
       }
    }
@@ -132,13 +132,13 @@ class Context {
             for (let j = 0; j < this._cols; j++) {
                this._charMatrix[i][j] = ''
             }
-            this._styleData[i] = []
+            this._styleDataMatrix[i] = []
             for (let j = 0; j < this._cols; j++) {
-               this._styleData[i][j] = []
+               this._styleDataMatrix[i][j] = []
             }
          }
          else {
-            this._styleData[i] = this._styleData[i + n]
+            this._styleDataMatrix[i] = this._styleDataMatrix[i + n]
             this._charMatrix[i] = this._charMatrix[i + n]
          }
       }
@@ -152,11 +152,11 @@ class Context {
       for (let k = 0; k < n; k++) {
          for (let j = this.getCursorY(); j < this._cols; j++) {
             if (j < this._cols - 1) {
-               this.set(this.getCursorX(), j, this.get(this.getCursorX(), j + 1))
+               this.setChar(this.getCursorX(), j, this.getChar(this.getCursorX(), j + 1))
                this.setStyleData(this.getCursorX(), j, this.getStyleData(this.getCursorX(), j + 1))
             }
             else {
-               this.set(this.getCursorX(), j, (this.getCursorX() < this._rows - 1) ? this.get(this.getCursorX() + 1, 0) : '   ')
+               this.setChar(this.getCursorX(), j, (this.getCursorX() < this._rows - 1) ? this.getChar(this.getCursorX() + 1, 0) : '   ')
                this.setStyleData(this.getCursorX(), j, (this.getCursorX() < this._rows - 1) ? this.getStyleData(this.getCursorX() + 1, 0) : null)
             }
          }
@@ -164,11 +164,11 @@ class Context {
          for (let i = this.getCursorX() + 1; i < this._rows; i++) {
             for (let j = 0; j < this._cols; j++) {
                if (j < this._cols - 1) {
-                  this.set(i, j, this.get(i, j + 1))
+                  this.setChar(i, j, this.getChar(i, j + 1))
                   this.setStyleData(i, j, this.getStyleData(i, j + 1))
                }
                else {
-                  this.set(i, j, (i < this._rows - 1) ? this.get(i + 1, 0) : '')
+                  this.setChar(i, j, (i < this._rows - 1) ? this.getChar(i + 1, 0) : '')
                   this.setStyleData(i, j, (i < this._rows - 1) ? this.getStyleData(i + 1, 0) : '')
                }
             }
@@ -188,12 +188,12 @@ class Context {
 
    /* Get style data of cell (x,y) */
    getStyleData(x, y) {
-      return this._styleData[x][y]
+      return this._styleDataMatrix[x][y]
    }
 
    /* Set style data of cell (x,y) */
    setStyleData(x, y, styleData) {
-      this._styleData[x][y] = styleData
+      this._styleDataMatrix[x][y] = styleData
    }
 
    /* Get cursor position */
@@ -227,7 +227,7 @@ class Context {
    }
 
    /* Get character value of cell (x,y). */
-   get(x, y) {
+   getChar(x, y) {
       if (x > this._rows - 1 || y > this._cols - 1) {
          throw Error(`Bad cell request: ${x}, ${y}`)
       }
@@ -235,7 +235,7 @@ class Context {
    }
 
    /* Set character value of cell (x,y). */
-   set(x, y, val) {
+   setChar(x, y, val) {
       this._charMatrix[x][y] = val
    }
 

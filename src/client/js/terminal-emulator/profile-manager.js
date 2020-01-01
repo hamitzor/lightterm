@@ -6,17 +6,17 @@ class ProfileManager {
       this._rows = 35/* Row number */
 
       this._colors = [
-         '#FFFFFF',/* Text color. */
-         '#222222',/* Background color. */
-         '#222222',/* Cursor color. */
-         '#FFFFFF',/* Cursor background color. */
-         '#2E3436',/* Black */
-         '#CC0000',/* Red */
-         '#76DB16',/* Green */
-         '#C4A000',/* Yellow */
-         '#6EADFF',/* Blue */
-         '#75507B',/* Magenta */
-         '#06989A',/* Black */
+         '#ffffff',/* Text color. */
+         '#191919',/* Background color. */
+         '#191919',/* Cursor color. */
+         '#ffffff',/* Cursor background color. */
+         '#191919',/* Black */
+         '#e03516',/* Red */
+         '#7fed15',/* Green */
+         '#ffd100',/* Yellow */
+         '#3d94ff',/* Blue */
+         '#cf73de',/* Magenta */
+         '#00d4d0',/* Cyan */
          '#D3D7CF',/* White */
          '#555753',/* Bright black */
          '#EF2929',/* Bright red */
@@ -24,7 +24,7 @@ class ProfileManager {
          '#FCE94F',/* Bright yellow */
          '#729FCF',/* Bright blue */
          '#AD7FA8',/* Bright magenta */
-         '#34E2E2',/* Bright black */
+         '#34E2E2',/* Bright cyan */
          '#EEEEEC' /* Bright white */
       ]
 

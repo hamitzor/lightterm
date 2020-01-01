@@ -93,15 +93,20 @@ button{
 
 .tab-title{
    height: 100%;
-   background-color: rgb(0, 162, 255);
-   color: white;
+   background-color: rgb(189, 221, 255);
+   color: rgb(0, 0, 0);
    display: flex;
    align-items: center;
    justify-content: center;
    cursor: pointer;
-   border: 1px solid rgb(0, 130, 206);
+   border: 1px solid  rgb(132, 191, 255);
    position: relative;
    font-weight: 500;
+}
+
+.tab-title.inactive{
+   background-color: rgb(224, 239, 255);
+   border: 1px solid  rgb(255, 255, 255);
 }
 
 .tab-title-close-btn{
@@ -113,6 +118,7 @@ button{
    border: 1px solid rgb(161, 41, 41);
    cursor: pointer;
    font-size: 14px;
+   border-radius: 20%;
    position: absolute;
    right: 5px;
    z-index: 1000;
@@ -120,10 +126,6 @@ button{
 
 .tab-title-close-btn:hover{
    background-color: rgb(255, 97, 97);
-}
-
-.tab-title.inactive{
-   background-color: rgb(31, 38, 138);
 }
 
 .term-tab.hide{

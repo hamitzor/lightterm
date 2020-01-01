@@ -5,7 +5,6 @@ const TerminalEmulator = require('./terminal-emulator/terminal-emulator')
 /* Class which is responsible for managing multiple terminal emulators (tabs) */
 class TerminalManager {
 
-
    constructor({ tabScreensContainerEl, tabTitlesEl, newTabBtnEl }) {
       /* It needs some elements like, a container element for tab screens, tab titles etc. */
       this._tabScreensContainerEl = tabScreensContainerEl
@@ -85,6 +84,9 @@ class TerminalManager {
          }
       }
       this._tabs.splice(index, 1)
+      if (this._tabs.length < 2) {
+         document.getElementById(`close-tab-${this._tabs[0].emulator.getSessionId()}`).style.display = 'none'
+      }
       this.updateActiveTab()
       this.updateActiveTabTitle()
       this.updateTabTitleStyle()
@@ -123,7 +125,8 @@ class TerminalManager {
    updateTabTitleStyle() {
       const tabTitles = this._tabTitlesEl.childNodes
       for (let i = 0; i < tabTitles.length; i++) {
-         this._tabTitlesEl.childNodes.item(i).style.width = `${100 / this._tabs.length}%`
+         this._tabTitlesEl.childNodes.item(i).style.width = `${
+            100 / this._tabs.length}%`
       }
    }
 
@@ -163,7 +166,7 @@ class TerminalManager {
       this._tabs.push({ sessionId: emulator.getSessionId(), emulator })
 
       /* Create a button element to be used in closing the tab and add the event listener accordingly */
-      const closeBtnEl = util.createEl('<button class="tab-title-close-btn">&#215;</button>')
+      const closeBtnEl = util.createEl(`<button id="close-tab-${emulator.getSessionId()}" class="tab-title-close-btn">&#215;</button>`)
       closeBtnEl.addEventListener('click', e => {
          e.stopPropagation()
          this.closeTab(this.getTabIndex(emulator.getSessionId()))
@@ -177,6 +180,14 @@ class TerminalManager {
       /* Append the elements into DOM */
       tabTitleEl.appendChild(closeBtnEl)
       this._tabTitlesEl.append(tabTitleEl)
+
+      if (this._tabs.length === 1) {
+         document.getElementById(`close-tab-${this._tabs[0].emulator.getSessionId()}`).style.display = 'none'
+      }
+
+      if (this._tabs.length > 1) {
+         document.getElementById(`close-tab-${this._tabs[0].emulator.getSessionId()}`).style.display = 'inline-block'
+      }
 
       /* Set the newly created tab as the active one */
       this._activeTab = this.getTabIndex(emulator.getSessionId())

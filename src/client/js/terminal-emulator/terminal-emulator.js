@@ -19,7 +19,11 @@ const CHARACTER_MAP = {
    ControlC: '\x03',
    ControlD: '\x04',
    Delete: '\u001b[3~',
-   F12: ''
+   F12: '',
+   Home: '\u001b[H',
+   End: '\u001b[F',
+   PageUp: '\u001b[5~',
+   PageDown: '\u001b[6~',
 }
 
 /* Class that emulates a terminal on client-side */

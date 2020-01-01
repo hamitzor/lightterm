@@ -1,5 +1,3 @@
-const util = require('../util')
-
 /* Class that is responsible to do actual rendering in HTML */
 class Renderer {
 
@@ -48,7 +46,7 @@ class Renderer {
 
             /* Join css class array and add to the cell element. Put the character stored in context for cell (x,y) 
             into element */
-            newInnerHTML = newInnerHTML + `<span class="term-cell ${classList.join(' ')}" style="width: ${w}px;">${this._context.get(y, x)}</span>`
+            newInnerHTML = newInnerHTML + `<span class="term-cell ${classList.join(' ')}" style="width: ${w}px;">${this._context.getChar(y, x)}</span>`
 
          }
 

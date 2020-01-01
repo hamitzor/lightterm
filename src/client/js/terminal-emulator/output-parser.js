@@ -358,7 +358,7 @@ class OutputParser {
                   /* Eventually, update context with global styling data of cell (x,y) */
                   this._context.setStyleData(this._context.getCursorX(), this._context.getCursorY(), [...globalStyleCodes])
                   /* Update context with character value of cell (x,y) */
-                  this._context.set(this._context.getCursorX(), this._context.getCursorY(), symbol)
+                  this._context.setChar(this._context.getCursorX(), this._context.getCursorY(), symbol)
 
                   /* Update cursor position. Consider some special cases like, cursor on the last cell of the line
                   or the screen, etc.*/
