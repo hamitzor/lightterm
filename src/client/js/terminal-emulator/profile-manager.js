@@ -2,7 +2,7 @@
 
 class ProfileManager {
    constructor() {
-      this._cols = 120/* Column number */
+      this._cols = 124/* Column number */
       this._rows = 35/* Row number */
       this._colored = false
       this._colors = [
@@ -138,14 +138,16 @@ class ProfileManager {
       .term-cursor-cell {
          color: ${this._colors[2]};
          background-color: ${this._colors[3]};
-         animation: blinker steps(1) 500ms infinite alternate
+         animation: none
       }
       
       .term-cursor-cell.stop-animation {
          animation: none
       }
 
-      `
+      .term-tab:focus .term-cursor-cell {
+         animation: blinker steps(1) 500ms infinite alternate
+      }`
 
       document.getElementById('term-style').appendChild(document.createTextNode(content))
    }
