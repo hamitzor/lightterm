@@ -152,7 +152,7 @@ class TerminalManager {
          profileManager: this._profileManager,
          termScreenEl,
          /* Play a sample bell sound if 'play bell command' is given by emulator */
-         onBell: () => new Audio('/public/bell.mp3').play(),
+         onBell: () => new Audio('/bell.mp3').play(),
          /* Update title when 'update title command' is given by emulator */
          onTitleUpdate: (title, emulator) => {
             this.updateTabTitleText(this.getTabIndex(emulator.getSessionId()), title)

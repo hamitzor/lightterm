@@ -15,7 +15,7 @@ const initializeApp = () => {
    expressWs(app)
 
    /* Set the directory for static files, *.css, *.js, etc.*/
-   app.use(express.static(path.resolve(__dirname, '../client')))
+   app.use(express.static(path.resolve(__dirname, '../client/public')))
    
    /* Use busboy middleware for file uploading */
    app.use(busboy())
