@@ -4,7 +4,7 @@ class ProfileManager {
    constructor() {
       this._cols = 124/* Column number */
       this._rows = 35/* Row number */
-      this._colored = false
+      this._colored = true
       this._colors = [
          '#ffffff',/* Text color. */
          '#191919',/* Background color. */
