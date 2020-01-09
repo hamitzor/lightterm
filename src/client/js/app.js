@@ -9,6 +9,7 @@ const initializeApplication = async () => {
    const fontString = `Anonymous+Pro|B612+Mono|Courier+Prime|Cousine|Cutive+Mono|Fira+Code|Fira+Mono|IBM+Plex+Mono|Nanum+Gothic+Coding|Nova+Mono|Overpass+Mono|Oxygen+Mono|PT+Mono|Roboto|Share+Tech+Mono|Source+Code+Pro|Space+Mono|Ubuntu+Mono`
    const fontNames = fontString.split('|').map(f => f.replace(/\+/g, ' ')).filter(f => f !== 'Roboto')
    fontNames.unshift('monospace')
+   fontNames.unshift('Courier10PitchBT')
    hidedEl.innerHTML = fontNames.map(f => `<span style="font-family:${f}">A</span>`).join('')
 
    /* Instantiate terminal manager by giving it the appropriate elements */

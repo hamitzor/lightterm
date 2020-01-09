@@ -29,7 +29,7 @@ class ProfileManager {
       ]
 
       this._text = {
-         fontFamily: 'Courier Prime',
+         fontFamily: 'Courier10PitchBT',
          fontSize: 20
       }
    }
@@ -158,7 +158,7 @@ class ProfileManager {
       el.style.fontFamily = this._text.fontFamily
       el.style.fontSize = `${this._text.fontSize}px`
       const info = el.getBoundingClientRect()
-      return { w: info.width, h: info.height }
+      return { w: info.width+1, h: info.height+1 }
    }
 
 }
