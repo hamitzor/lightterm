@@ -11,21 +11,21 @@ class ProfileManager {
          '#191919',/* Cursor color. */
          '#ffffff',/* Cursor background color. */
          '#191919',/* Black */
-         '#e03516',/* Red */
-         '#7fed15',/* Green */
-         '#ffd100',/* Yellow */
-         '#3d94ff',/* Blue */
-         '#cf73de',/* Magenta */
-         '#00d4d0',/* Cyan */
-         '#D3D7CF',/* White */
-         '#555753',/* Bright black */
-         '#EF2929',/* Bright red */
-         '#8AE234',/* Bright green */
-         '#FCE94F',/* Bright yellow */
-         '#729FCF',/* Bright blue */
-         '#AD7FA8',/* Bright magenta */
-         '#34E2E2',/* Bright cyan */
-         '#EEEEEC' /* Bright white */
+         '#DC322F',/* Red */
+         '#00E677',/* Green */
+         '#FF8400',/* Yellow */
+         '#00FFDB',/* Blue */
+         '#B729D9',/* Magenta */
+         '#EDD400',/* Cyan */
+         '#ffffff',/* White */
+         '#191919',/* Bright black */
+         '#DC322F',/* Bright red */
+         '#00E677',/* Bright green */
+         '#FF8400',/* Bright yellow */
+         '#00FFDB',/* Bright blue */
+         '#B729D9',/* Bright magenta */
+         '#EDD400',/* Bright cyan */
+         '#ffffff' /* Bright white */
       ]
 
       this._text = {
