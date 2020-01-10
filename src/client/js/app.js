@@ -19,7 +19,7 @@ const initializeApplication = async () => {
       newTabBtnEl: document.getElementById('new-tab-btn'),
       alertEl: document.getElementById('alert')
    })
-
+   await terminalManager.initialize()
    /* Create a new tab */
    await terminalManager.newTab()
    const profileManager = terminalManager.getProfileManager()
@@ -34,23 +34,32 @@ const initializeApplication = async () => {
    const colSettingInputEl = document.getElementById('settings-input-col')
    const fontSizeSettingInputEl = document.getElementById('settings-input-font-size')
    const fontFamilySettingSelectEl = document.getElementById('settings-input-font-family')
+   const profileSelectEl = document.getElementById('profiles-select')
+   const newProfileBtnEl = document.getElementById('new-profile-btn')
+   const newProfileNameSettingInputEl = document.getElementById('new-settings-input-profile-name')
    const colorSettingEls = []
 
    for (let i = 0; i < 20; i++) {
       colorSettingEls[i] = document.getElementById(i)
    }
 
+   profileSelectEl.innerHTML = profileManager.getAllProfileNames().map(f => `<option value="${f}">${f}</option>`).join('')
    fontFamilySettingSelectEl.innerHTML = fontNames.map(f => `<option value="${f}">${f}</option>`).join('')
 
    /* Read data from profime manager and fill settings accordingly */
-   coloredSelectEl.value = profileManager.isColored() ? 'Enabled' : 'Disabled'
-   rowSettingInputEl.value = profileManager.getRowNumber()
-   colSettingInputEl.value = profileManager.getColNumber()
-   fontSizeSettingInputEl.value = profileManager.getTextInformation().fontSize
-   fontFamilySettingSelectEl.value = profileManager.getTextInformation().fontFamily
-   colorSettingEls.forEach((el, i) => {
-      el.value = profileManager.getPalette()[i]
-   })
+   const updateSettings = () => {
+      profileSelectEl.value = profileManager.getProfile()
+      coloredSelectEl.value = profileManager.isColored() ? 'Enabled' : 'Disabled'
+      rowSettingInputEl.value = profileManager.getRowNumber()
+      colSettingInputEl.value = profileManager.getColNumber()
+      fontSizeSettingInputEl.value = profileManager.getTextInformation().fontSize
+      fontFamilySettingSelectEl.value = profileManager.getTextInformation().fontFamily
+      colorSettingEls.forEach((el, i) => {
+         el.value = profileManager.getPalette()[i]
+      })
+   }
+
+   updateSettings()
 
    settingsOpenBtnEl.addEventListener('click', () => {
       settingsEl.classList.remove('hide')
@@ -69,16 +78,18 @@ const initializeApplication = async () => {
    })
 
    rowSettingInputEl.addEventListener('change', e => {
-      if (parseInt(e.target.value) !== profileManager.getRowNumber() || parseInt(colSettingInputEl.value) !== profileManager.getColNumber()) {
-         terminalManager.resize(parseInt(e.target.value), parseInt(colSettingInputEl.value))
+      if (parseInt(rowSettingInputEl.value) !== profileManager.getRowNumber() || parseInt(colSettingInputEl.value) !== profileManager.getColNumber()) {
+         profileManager.setRowNumber(parseInt(rowSettingInputEl.value))
+         terminalManager.resize()
          profileManager.updateStyleSheet()
          terminalManager.forceScreenRefresh()
       }
    })
 
    colSettingInputEl.addEventListener('change', e => {
-      if (parseInt(rowSettingInputEl.value) !== profileManager.getRowNumber() || parseInt(e.target.value) !== profileManager.getColNumber()) {
-         terminalManager.resize(parseInt(rowSettingInputEl.value), parseInt(e.target.value))
+      if (parseInt(rowSettingInputEl.value) !== profileManager.getRowNumber() || parseInt(colSettingInputEl.value) !== profileManager.getColNumber()) {
+         profileManager.setColumnNumber(parseInt(colSettingInputEl.value))
+         terminalManager.resize()
          profileManager.updateStyleSheet()
          terminalManager.forceScreenRefresh()
       }
@@ -90,6 +101,23 @@ const initializeApplication = async () => {
       })
       profileManager.updateStyleSheet()
       terminalManager.forceScreenRefresh()
+   })
+
+   newProfileBtnEl.addEventListener('click', e => {
+      profileManager.createNewProfile(newProfileNameSettingInputEl.value)
+      profileSelectEl.innerHTML = profileManager.getAllProfileNames().map(f => `<option value="${f}">${f}</option>`).join('')
+      profileSelectEl.value = newProfileNameSettingInputEl.value
+      newProfileNameSettingInputEl.value = ''
+   })
+
+   profileSelectEl.addEventListener('change', e => {
+      profileManager.setProfile(e.target.value)
+      if (parseInt(rowSettingInputEl.value) !== profileManager.getRowNumber() || parseInt(colSettingInputEl.value) !== profileManager.getColNumber()) {
+         terminalManager.resize()
+      }
+      profileManager.updateStyleSheet()
+      terminalManager.forceScreenRefresh()
+      updateSettings()
    })
 
    fontFamilySettingSelectEl.addEventListener('change', e => {

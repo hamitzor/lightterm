@@ -1,82 +1,98 @@
 /* Class responsible for managing the profile of the emulator. */
+const util = require('../util')
 
 class ProfileManager {
    constructor() {
-      this._cols = 120/* Column number */
-      this._rows = 40/* Row number */
-      this._colored = true
-      this._colors = [
-         '#ffffff',/* Text color. */
-         '#191919',/* Background color. */
-         '#191919',/* Cursor color. */
-         '#ffffff',/* Cursor background color. */
-         '#191919',/* Black */
-         '#DC322F',/* Red */
-         '#00E677',/* Green */
-         '#FF8400',/* Yellow */
-         '#30c4ff',/* Blue */
-         '#B729D9',/* Magenta */
-         '#EDD400',/* Cyan */
-         '#ffffff',/* White */
-         '#191919',/* Bright black */
-         '#DC322F',/* Bright red */
-         '#00E677',/* Bright green */
-         '#FF8400',/* Bright yellow */
-         '#30c4ff',/* Bright blue */
-         '#B729D9',/* Bright magenta */
-         '#EDD400',/* Bright cyan */
-         '#ffffff' /* Bright white */
-      ]
-
-      this._text = {
-         fontFamily: 'Courier10PitchBT',
-         fontSize: 18
-      }
+      this.initialize()
    }
 
-   setColored(colored) {
-      this._colored = colored
+   async initialize() {
+      this._profileJsonData = await this.fetchProfileJson()
+      this._selectedProfile = this._profileJsonData.selectedProfile
+   }
+
+   getProfileData() {
+      return this._profileJsonData.profiles[this._selectedProfile]
+   }
+
+   async createNewProfile(name) {
+      this._profileJsonData.profiles[name] = { ...this.getProfileData() }
+      this._selectedProfile = name
+      await this.postProfileJson()
+   }
+
+   async postProfileJson() {
+      this._profileJsonData.profiles[this._selectedProfile] = { ...this.getProfileData() }
+      this._profileJsonData.selectedProfile = this._selectedProfile
+      return util.postJson('/profile', this._profileJsonData)
+   }
+
+   setProfile(name) {
+      this._selectedProfile = name
+      this.postProfileJson()
+   }
+
+   getProfile() {
+      return this._selectedProfile
+   }
+
+   async fetchProfileJson() {
+      return await util.fetchJson('/profile')
+   }
+
+   getAllProfileNames() {
+      return Object.keys(this._profileJsonData.profiles)
+   }
+
+   async setColored(colored) {
+      this.getProfileData().colored = colored
+      await this.postProfileJson()
    }
 
    isColored() {
-      return this._colored
+      return this.getProfileData().colored
    }
 
    getColNumber() {
-      return this._cols
+      return this.getProfileData().cols
    }
 
-   setColumnNumber(col) {
-      this._cols = col
+   async setColumnNumber(col) {
+      this.getProfileData().cols = col
+      await this.postProfileJson()
    }
 
    getRowNumber() {
-      return this._rows
+      return this.getProfileData().rows
    }
 
-   setRowNumber(row) {
-      this._rows = row
+   async setRowNumber(row) {
+      this.getProfileData().rows = row
+      await this.postProfileJson()
    }
 
    getPalette() {
-      return this._colors
+      return this.getProfileData().colors
    }
 
    getTextInformation() {
-      return this._text
+      return this.getProfileData().text
    }
 
-   updatePalette(index, val) {
-      this._colors[index] = val
+   async updatePalette(index, val) {
+      this.getProfileData().colors[index] = val
+      await this.postProfileJson()
    }
 
-   updateTextInformation(update) {
-      this._text = { ...this._text, ...update }
-      return this._text
+   async updateTextInformation(update) {
+      this.getProfileData().text = { ...this.getProfileData().text, ...update }
+      await this.postProfileJson()
    }
 
    /* Dynamically create  a stylesheet with respect to stored color and text information */
    updateStyleSheet() {
+
+      const colors = this.getProfileData().colors
 
       const getCursorStyle = (color1, color2, n) => `
 
@@ -112,18 +128,18 @@ class ProfileManager {
       let content = `
 
       .term-tab {
-         color: ${this._colors[0]};
-         background-color: ${this._colors[1]};
-         font-family: ${this._text.fontFamily};
-         font-size: ${this._text.fontSize}px;
+         color: ${colors[0]};
+         background-color: ${colors[1]};
+         font-family: ${this.getProfileData().text.fontFamily};
+         font-size: ${this.getProfileData().text.fontSize}px;
          padding: 2px;
          cursor: default;
          outline: none;
       }
 
       .term-inverse-cell{
-         color: ${this._colors[1]};
-         background-color: ${this._colors[0]};
+         color: ${colors[1]};
+         background-color: ${colors[0]};
       }
 
       .term-cell-style-1 {
@@ -142,27 +158,27 @@ class ProfileManager {
       for (i = 0; i < 8; i++) {
          content = content + `
          .term-cell-style-${30 + i} {
-            color: ${this._colors[i + 4]};
+            color: ${colors[i + 4]};
          }` + `
          .term-cell-style-${40 + i} {
-            background-color: ${this._colors[i + 4]};
+            background-color: ${colors[i + 4]};
          }`+ `
          .term-cell-style-${90 + i} {
-            color: ${this._colors[i + 8 + 4]};
+            color: ${colors[i + 8 + 4]};
          }`+ `
          .term-cell-style-${100 + i} {
-            background-color: ${this._colors[i + 8 + 4]};
+            background-color: ${colors[i + 8 + 4]};
          }`
       }
 
       for (i = 0; i < 8; i++) {
-         content = content + getCursorStyle(this._colors[2], this._colors[i + 4], 30 + i)
-         content = content + getCursorStyle(this._colors[i + 4], this._colors[3], 40 + i)
-         content = content + getCursorStyle(this._colors[2], this._colors[i + 8 + 4], 90 + i)
-         content = content + getCursorStyle(this._colors[i + 8 + 4], this._colors[3], 100 + i)
+         content = content + getCursorStyle(colors[2], colors[i + 4], 30 + i)
+         content = content + getCursorStyle(colors[i + 4], colors[3], 40 + i)
+         content = content + getCursorStyle(colors[2], colors[i + 8 + 4], 90 + i)
+         content = content + getCursorStyle(colors[i + 8 + 4], colors[3], 100 + i)
       }
 
-      content = content + getCursorStyle(this._colors[2], this._colors[3])
+      content = content + getCursorStyle(colors[2], colors[3])
 
       document.getElementById('term-style').appendChild(document.createTextNode(content))
    }
@@ -170,8 +186,8 @@ class ProfileManager {
    /* Calculate a 'cell' width and height according to font-family and font-size. This is used by renderer. */
    getCellSize() {
       const el = document.getElementById('size-calc-container')
-      el.style.fontFamily = this._text.fontFamily
-      el.style.fontSize = `${this._text.fontSize}px`
+      el.style.fontFamily = this.getProfileData().text.fontFamily
+      el.style.fontSize = `${this.getProfileData().text.fontSize}px`
       const info = el.getBoundingClientRect()
       return { w: info.width + 0.5, h: info.height + 0.5 }
    }

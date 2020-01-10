@@ -6,5 +6,6 @@ const rootRouter = express.Router()
 rootRouter.use('/', require('./home-router'))
 rootRouter.use('/session', require('./session-router'))
 rootRouter.use('/file', require('./file-router'))
+rootRouter.use('/profile', require('./profile-router'))
 
 module.exports = rootRouter

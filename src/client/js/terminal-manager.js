@@ -10,8 +10,12 @@ class TerminalManager {
       this._tabScreensContainerEl = tabScreensContainerEl
       this._tabTitlesEl = tabTitlesEl
       this._newTabBtnEl = newTabBtnEl
+   }
+
+   async initialize() {
       /* It instantiates ProfileManager to be used in emulators it creates later */
       this._profileManager = new ProfileManager()
+      await this._profileManager.initialize()
       /* call updateStyleSheet to update stylesheet used in rendering in emulators */
       this._profileManager.updateStyleSheet()
       /* Array holds each tab's data */
@@ -28,14 +32,7 @@ class TerminalManager {
    }
 
    /* Resize all tabs */
-   async resize(row, col) {
-      if (!col && !row) {
-         return
-      }
-      /* Update profile manager accordingly */
-      this._profileManager.setRowNumber(row)
-      this._profileManager.setColumnNumber(col)
-
+   async resize() {
       /* Resize each tab. No need to specify new row and column numbers since emulator has access to profile
       manager instance */
       for (let i = 0; i < this._tabs.length; i++) {

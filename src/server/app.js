@@ -6,6 +6,7 @@ const config = require('../../config.json')
 const expressWs = require('express-ws')
 const sessionControllers = require('./controllers/session-controllers')
 const busboy = require('connect-busboy')
+const bodyParser = require('body-parser')
 
 /* Express server initialized here */
 const initializeApp = () => {
@@ -16,7 +17,7 @@ const initializeApp = () => {
 
    /* Set the directory for static files, *.css, *.js, etc.*/
    app.use(express.static(path.resolve(__dirname, '../client/public')))
-   
+   app.use(bodyParser.json())
    /* Use busboy middleware for file uploading */
    app.use(busboy())
    /* Bind root router that includes all sub-routers */

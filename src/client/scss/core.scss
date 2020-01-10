@@ -14,6 +14,10 @@ html{
 body{
    background: linear-gradient(to right, rgb(255, 243, 243), rgb(81, 113, 138));
 }
+select{
+   display: inline-block;
+   width: 100%;
+}
 
 body, input {
    height: 100%;
@@ -23,9 +27,21 @@ body, input {
    font-family: Roboto;
 }
 
+input[type="color"]{
+   height: 18px;
+}
+
 button{
    outline: none;
    border:none;
+}
+
+.settings-button{
+   background-color: #ededed;
+   cursor: pointer;
+}
+.settings-button:hover{
+   background-color: #ffffff;
 }
 
 .main-container {
@@ -58,6 +74,11 @@ button{
    z-index: -1000;
 }
 
+.window{
+   box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.1), -1px -1px 3px 1px rgba(0, 0, 0, 0.1);
+   border-radius: 5px;
+}
+
 .window-title-bar{
    display: flex;
    height: 30px;
@@ -70,7 +91,7 @@ button{
 }
 
 .new-tab-btn{
-   background-color: rgb(0, 219, 99);
+   background-color: rgb(0, 195, 255);
    color: white;
    height: 100%;
    cursor: pointer;
@@ -78,32 +99,33 @@ button{
 }
 
 .new-tab-btn:hover{
-   background-color: rgb(21, 240, 120);
+   background-color: rgb(73, 213, 255);
 }
 
 .settings-open-btn{
-   background-color: rgb(255, 145, 0);
+   background-color: rgb(169, 87, 247);
    color: white;
    height: 100%;
    cursor: pointer;
    font-size: 20px;
+   border-top-right-radius: 5px;
 }
 
 .settings-open-btn:hover{
-   background-color: rgb(255, 178, 77);
+   background-color: rgb(181, 102, 255);
 }
 
 .tab-titles{
-   background-color: grey;
    flex: 1;
    display: flex;
 }
 
 .tab-title{
    height: 100%;
-   background-color: rgb(224, 238, 255);
+   background-color: rgb(194, 226, 255);
    color: rgb(0, 0, 0);
    display: flex;
+   font-size: 14px;
    align-items: center;
    justify-content: center;
    cursor: pointer;
@@ -111,8 +133,12 @@ button{
    font-weight: 500;
 }
 
+.tab-title:first-child{
+   border-top-left-radius: 5px;
+}
+
 .tab-title.inactive{
-   background-color: rgb(240, 247, 255);
+   background-color: rgb(255, 255, 255);
 }
 
 .tab-title-close-btn{
@@ -133,17 +159,25 @@ button{
    background-color: rgb(255, 97, 97);
 }
 
+.term-tab{
+   border-bottom-left-radius: 5px;
+   border-bottom-right-radius: 5px;
+}
+
 .term-tab.hide{
    display: none
 }
 
 .settings-container{
+   width: 200px;
    background-color: #222;
    color: #fff;
    position: absolute;
    right: 5px;
    padding: 10px;
    z-index: 10000;
+   border-radius: 5px;
+   box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.1), -1px -1px 3px 1px rgba(0, 0, 0, 0.1);
 }
 
 .settings-container input{
@@ -170,6 +204,7 @@ button{
    height: 100%;
    cursor: pointer;
    font-size: 20px;
+   border-radius: 20%;
 }
 
 .settings-close-btn:hover{

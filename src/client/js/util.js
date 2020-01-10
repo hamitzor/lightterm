@@ -15,5 +15,23 @@ exports.log = function (...v) {
    }
 }
 
+exports.postJson = async (url, data) => {
+   const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+         'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+   })
+   const json = await res.json()
+   return json
+}
+
+exports.fetchJson = async url => {
+   const res = await fetch(url)
+   const json = await res.json()
+   return json
+}
+
 exports.DEBUG = DEBUG
 exports.BUFFERED_RENDERING = BUFFERED_RENDERING

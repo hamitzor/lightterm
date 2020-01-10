@@ -6,3 +6,4 @@ src/client/public/*.js
 src/client/public/*.js.map
 src/client/public/*.css
 config.json
+profiles.json

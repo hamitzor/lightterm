@@ -1,0 +1,98 @@
+{
+   "selectedProfile": "dark",
+   "profiles": {
+       "dark": {
+           "cols": 100,
+           "rows": 30,
+           "colored": true,
+           "colors": [
+               "#FFFFFF",
+               "#181818",
+               "#181818",
+               "#FFFFFF",
+               "#545454",
+               "#DC322F",
+               "#00E677",
+               "#FF8400",
+               "#30C4FF",
+               "#B729D9",
+               "#EDD400",
+               "#FFFFFF",
+               "#545454",
+               "#DC322F",
+               "#00E677",
+               "#FF8400",
+               "#30C4FF",
+               "#B729D9",
+               "#EDD400",
+               "#FFFFFF"
+           ],
+           "text": {
+               "fontFamily": "Oxygen Mono",
+               "fontSize": 18
+           }
+       },
+       "light": {
+           "cols": 100,
+           "rows": 30,
+           "colored": true,
+           "colors": [
+               "#131313",
+               "#f9f9f9",
+               "#f9f9f9",
+               "#131313",
+               "#545454",
+               "#DC322F",
+               "#43aa33",
+               "#FF8400",
+               "#2265c7",
+               "#B729D9",
+               "#2cb18f",
+               "#FFFFFF",
+               "#545454",
+               "#DC322F",
+               "#00E677",
+               "#FF8400",
+               "#30C4FF",
+               "#B729D9",
+               "#EDD400",
+               "#FFFFFF"
+           ],
+           "text": {
+               "fontFamily": "Fira Mono",
+               "fontSize": 20
+           }
+       },
+       "no-color": {
+           "cols": 130,
+           "rows": 35,
+           "colored": false,
+           "colors": [
+               "#FFFFFF",
+               "#181818",
+               "#181818",
+               "#FFFFFF",
+               "#545454",
+               "#DC322F",
+               "#00E677",
+               "#FF8400",
+               "#30C4FF",
+               "#B729D9",
+               "#EDD400",
+               "#FFFFFF",
+               "#545454",
+               "#DC322F",
+               "#00E677",
+               "#FF8400",
+               "#30C4FF",
+               "#B729D9",
+               "#EDD400",
+               "#FFFFFF"
+           ],
+           "text": {
+               "fontFamily": "Courier10PitchBT",
+               "fontSize": 16
+           }
+       }
+   }
+}
