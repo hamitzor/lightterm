@@ -7,7 +7,38 @@ const config = require('../../../../config.json')
 /* Character map that transforms pressed keys on client-side to actual sequences and characters for the emulator.
 Normal characters like a,b,0,1,-,_,? are not mapped here because they are directly sent to the emulator. 
 Only 12 special keys are handled in emulator in the context of this project. */
-const CHARACTER_MAP = {
+const APPLICATION_KEYPAD_TRANSFORM = {
+   Space: '\u001bO ',
+   Tab: '\u001bOI',
+   Enter: '\u001bOM',
+   '*': '\u001bOj',
+   '+': '\u001bOk',
+   ',': '\u001bOl',
+   '-': '\u001bOm',
+   Delete: '\u001b[3~',
+   '/': '\u001bOo',
+   Insert: '\u001b[2~',
+   End: '\u001bOF',
+   ArrowDown: '\u001b[B',
+   PageDown: '\u001b[6~',
+   ArrowLeft: '\u001b[D',
+   Begin: '\u001b[E',
+   ArrowRight: '\u001b[C',
+   Home: '\u001b[H',
+   ArrowUp: '\u001b[A',
+   PageUp: '\u001b[5~',
+   '=': '\u001bOX',
+}
+const APPLICATION_CURSOR_KEYS_TRANSFORM = {
+   ArrowLeft: '\u001bOD',
+   ArrowRight: '\u001bOC',
+   ArrowUp: '\u001bOA',
+   ArrowDown: '\u001bOB',
+   Home: '\u001bOH',
+   End: '\u001bOF',
+}
+const ALL_CHARACTERS = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz'
+const TRANSFORM_MAP = {
    Enter: '\n',
    Backspace: '\u0008',
    ArrowLeft: '\u001b[D',
@@ -16,14 +47,45 @@ const CHARACTER_MAP = {
    ArrowDown: '\u001b[B',
    Tab: '\t',
    Escape: '\u001b',
-   ControlC: '\x03',
-   ControlD: '\x04',
    Delete: '\u001b[3~',
    F12: '',
    Home: '\u001b[H',
    End: '\u001b[F',
    PageUp: '\u001b[5~',
    PageDown: '\u001b[6~',
+   'Control@': '\x00',
+   ControlA: '\x01',
+   ControlB: '\x02',
+   ControlC: '\x03',
+   ControlD: '\x04',
+   ControlE: '\x05',
+   ControlF: '\x06',
+   ControlG: '\x07',
+   ControlH: '\x08',
+   ControlI: '\x09',
+   ControlJ: '\x0A',
+   ControlK: '\x0B',
+   ControlL: '\x0C',
+   ControlM: '\x0D',
+   ControlN: '\x0E',
+   ControlO: '\x0F',
+   ControlP: '\x10',
+   ControlQ: '\x11',
+   ControlR: '\x12',
+   ControlS: '\x13',
+   ControlT: '\x14',
+   ControlU: '\x15',
+   ControlV: '\x16',
+   //Some browsers close tab when user perform a ctrl+w, so it is replaced with ctrt+2
+   'Control2': '\x17',
+   ControlX: '\x18',
+   ControlY: '\x19',
+   ControlZ: '\x1A',
+   'Control[': '\x1B',
+   'Control\\': '\x1C',
+   'Control]': '\x1D',
+   'Control^': '\x1E',
+   'Control_': '\x1F',
 }
 
 /* Class that emulates a terminal on client-side */
@@ -32,13 +94,21 @@ class TerminalEmulator {
    and column number, a valid WebSocket instance, a handler for play bell sound command and a handler for update
    window title command. */
    constructor({ profileManager, termScreenEl, onBell, onTitleUpdate }) {
+      this._errorOccured = false
       this._termScreenEl = termScreenEl
       this._outputBuffer = ''
       this._profileManager = profileManager
       this._title = '~'
 
       /* Create a context for the emulator */
-      this._context = new Context({ rows: this._profileManager.getRowNumber(), cols: this._profileManager.getColNumber() })
+      this._context = new Context({
+         rows: this._profileManager.getRowNumber(),
+         cols: this._profileManager.getColNumber(),
+         onError: (err, message) => {
+            console.error(err, message)
+            this._errorOccured = true
+         }
+      })
 
       /* Set handlers on context */
       this._context.onWindowCommand(command => {
@@ -142,7 +212,7 @@ class TerminalEmulator {
          })
 
          setInterval(() => {
-            if (this._outputBuffer !== '') {
+            if (this._outputBuffer !== '' && !this._errorOccured) {
                this.refreshScreen(this._outputBuffer)
             }
             this._outputBuffer = ''
@@ -183,8 +253,8 @@ class TerminalEmulator {
             e.stopPropagation()
          }
          else {
-            if (ctrl && ['c', 'C', 'd', 'D'].includes(e.key)) {
-               this.write(CHARACTER_MAP[`Control${e.key.toUpperCase()}`])
+            if (ctrl && (e.key === '2' || ALL_CHARACTERS.split('').includes(e.key))) {
+               this.write(TRANSFORM_MAP[`Control${e.key.toUpperCase()}`])
                e.preventDefault()
                e.stopPropagation()
             }
@@ -196,7 +266,20 @@ class TerminalEmulator {
                }
                if (!['Shift', 'F5', 'Alt', 'AltGraph', 'Control', 'CapsLock', 'Escape'].includes(e.key)) {
                   /* Transform pressed keys properly and write to emulator standart input */
-                  this.write(e.key.length > 1 ? (CHARACTER_MAP[e.key] !== undefined ? { keyboardKey: CHARACTER_MAP[e.key] } : e.key) : e.key)
+                  let keyMap = TRANSFORM_MAP
+                  let cursorKeyMap = TRANSFORM_MAP
+                  if (this._context.isApplicationCursors()) {
+                     cursorKeyMap = APPLICATION_CURSOR_KEYS_TRANSFORM
+                  }
+                  if (this._context.isApplicationKeypad()) {
+                     keyMap = { ...keyMap, ...APPLICATION_KEYPAD_TRANSFORM }
+                  }
+                  if (['ArrowLeft', 'ArrowRight', 'ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) {
+                     this.write(cursorKeyMap[e.key])
+                  }
+                  else {
+                     this.write(e.key.length > 1 ? (keyMap[e.key] !== undefined ? { keyboardKey: keyMap[e.key] } : e.key) : e.key)
+                  }
                }
             }
          }

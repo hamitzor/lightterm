@@ -21,32 +21,46 @@ class Renderer {
       let newInnerHTML = ''
 
       /* Render each row */
-      for (let y = 0; y < this._context.getRowNumber(); y++) {
+      for (let x = 0; x < this._context.getRowNumber(); x++) {
 
          /* Row has a width equal to column number times width of a cell and has a height equal to height of a cell. */
          newInnerHTML = newInnerHTML + `<div class="term-row" style="width: ${w * (this._context.getColNumber())}px; height: ${h}px; line-height: ${h}px;">`
 
          /* Render each cell */
-         for (let x = 0; x < this._context.getColNumber(); x++) {
+         for (let y = 0; y < this._context.getColNumber(); y++) {
             /* Array contains all css classes for the cell*/
             const classList = []
             /* If (x,y) is same with the cursor position, add cursor css class */
-            if (this._context.getCursorX() === y && this._context.getCursorY() === x) {
+            if (this._context.getCursorX() === x && this._context.getCursorY() === y) {
                classList.push('term-cursor-cell')
             }
 
+            const cellStyle = this._context.getStyleData(x, y)
+
             /* If context has a styling data at cell (x,y), iterate over it, and add appropriate css classes */
-            if (this._context.getStyleData(y, x) && this._context.getStyleData(y, x).length > 0) {
-               this._context.getStyleData(y, x).forEach(styleData => {
-                  if (styleData && this._profileManager.isColored()) {
-                     classList.push('term-cell-style-' + styleData)
+            if (cellStyle && cellStyle.length > 0) {
+               if (cellStyle[0] === 1 && cellStyle[4] === undefined && cellStyle[5] === undefined) {
+                  classList.push('term-inverse-cell')
+               }
+               cellStyle.forEach((styleData, index) => {
+                  if (styleData !== undefined) {
+                     if (index !== 0) {
+                        if ((index === 4 || index === 5)) {
+                           if (this._profileManager.isColored()) {
+                              classList.push('term-cell-style-' + styleData)
+                           }
+                        }
+                        else {
+                           classList.push('term-cell-style-' + styleData)
+                        }
+                     }
                   }
                })
             }
 
             /* Join css class array and add to the cell element. Put the character stored in context for cell (x,y) 
             into element */
-            newInnerHTML = newInnerHTML + `<span class="term-cell ${classList.join(' ')}" style="width: ${w}px;">${this._context.getChar(y, x)}</span>`
+            newInnerHTML = newInnerHTML + `<span class="term-cell ${classList.join(' ')}" style="width: ${w}px;">${this._context.getChar(x, y)}</span>`
 
          }
 

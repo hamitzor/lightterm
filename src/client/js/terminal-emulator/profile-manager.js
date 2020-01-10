@@ -2,8 +2,8 @@
 
 class ProfileManager {
    constructor() {
-      this._cols = 124/* Column number */
-      this._rows = 35/* Row number */
+      this._cols = 98/* Column number */
+      this._rows = 31/* Row number */
       this._colored = true
       this._colors = [
          '#ffffff',/* Text color. */
@@ -14,7 +14,7 @@ class ProfileManager {
          '#DC322F',/* Red */
          '#00E677',/* Green */
          '#FF8400',/* Yellow */
-         '#00FFDB',/* Blue */
+         '#30c4ff',/* Blue */
          '#B729D9',/* Magenta */
          '#EDD400',/* Cyan */
          '#ffffff',/* White */
@@ -22,7 +22,7 @@ class ProfileManager {
          '#DC322F',/* Bright red */
          '#00E677',/* Bright green */
          '#FF8400',/* Bright yellow */
-         '#00FFDB',/* Bright blue */
+         '#30c4ff',/* Bright blue */
          '#B729D9',/* Bright magenta */
          '#EDD400',/* Bright cyan */
          '#ffffff' /* Bright white */
@@ -30,7 +30,7 @@ class ProfileManager {
 
       this._text = {
          fontFamily: 'Courier10PitchBT',
-         fontSize: 20
+         fontSize: 24
       }
    }
 
@@ -77,6 +77,38 @@ class ProfileManager {
 
    /* Dynamically create  a stylesheet with respect to stored color and text information */
    updateStyleSheet() {
+
+      const getCursorStyle = (color1, color2, n) => `
+
+      @keyframes blinker${n ? `-${n}` : ''} {
+         0% { 
+            color: ${color1};
+            background-color: ${color2};
+         }
+         50% {
+            color: ${color2};
+            background-color: ${color1};
+         }
+         100% {
+            color: ${color1};
+            background-color: ${color2};
+         }
+      }
+
+      ${n ? `.term-cell-style-${n}` : ''}.term-cursor-cell {
+         color: ${color1};
+         background-color: ${color2};
+         animation: none
+      }
+      
+      ${n ? `.term-cell-style-${n}` : ''}.term-cursor-cell.stop-animation {
+         animation: none
+      }
+
+      .term-tab:focus ${n ? `.term-cell-style-${n}` : ''}.term-cursor-cell {
+         animation: blinker${n ? `-${n}` : ''} steps(1) 500ms infinite alternate
+      }`
+
       let content = `
 
       .term-tab {
@@ -87,6 +119,11 @@ class ProfileManager {
          padding: 2px;
          cursor: default;
          outline: none;
+      }
+
+      .term-inverse-cell{
+         color: ${this._colors[1]};
+         background-color: ${this._colors[0]};
       }
 
       .term-cell-style-1 {
@@ -118,36 +155,14 @@ class ProfileManager {
          }`
       }
 
-      content = content + `
-
-      @keyframes blinker {
-         0% { 
-            color: ${this._colors[2]};
-            background-color: ${this._colors[3]};
-         }
-         50% {
-            color: ${this._colors[3]};
-            background-color: ${this._colors[2]};
-         }
-         100% {
-            color: ${this._colors[2]};
-            background-color: ${this._colors[3]};
-         }
+      for (i = 0; i < 8; i++) {
+         content = content + getCursorStyle(this._colors[2], this._colors[i + 4], 30 + i)
+         content = content + getCursorStyle(this._colors[i + 4], this._colors[3], 40 + i)
+         content = content + getCursorStyle(this._colors[2], this._colors[i + 8 + 4], 90 + i)
+         content = content + getCursorStyle(this._colors[i + 8 + 4], this._colors[3], 100 + i)
       }
 
-      .term-cursor-cell {
-         color: ${this._colors[2]};
-         background-color: ${this._colors[3]};
-         animation: none
-      }
-      
-      .term-cursor-cell.stop-animation {
-         animation: none
-      }
-
-      .term-tab:focus .term-cursor-cell {
-         animation: blinker steps(1) 500ms infinite alternate
-      }`
+      content = content + getCursorStyle(this._colors[2], this._colors[3])
 
       document.getElementById('term-style').appendChild(document.createTextNode(content))
    }
@@ -158,7 +173,7 @@ class ProfileManager {
       el.style.fontFamily = this._text.fontFamily
       el.style.fontSize = `${this._text.fontSize}px`
       const info = el.getBoundingClientRect()
-      return { w: info.width+1, h: info.height+1 }
+      return { w: info.width + 1, h: info.height + 1 }
    }
 
 }
