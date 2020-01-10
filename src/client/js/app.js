@@ -6,7 +6,7 @@ const TerminalManager = require('./terminal-manager')
 
 const initializeApplication = async () => {
    const hidedEl = document.getElementById('hide')
-   const fontString = `Anonymous+Pro|B612+Mono|Courier+Prime|Cousine|Cutive+Mono|Fira+Code|Fira+Mono|IBM+Plex+Mono|Nanum+Gothic+Coding|Nova+Mono|Overpass+Mono|Oxygen+Mono|PT+Mono|Roboto|Share+Tech+Mono|Source+Code+Pro|Space+Mono|Ubuntu+Mono`
+   const fontString = `Anonymous+Pro|B612+Mono|Courier+Prime|Cousine|Cutive+Mono|Fira+Code|Fira+Mono|IBM+Plex+Mono|Inconsolata|Major+Mono+Display|Nanum+Gothic+Coding|Nova+Mono|Overpass+Mono|Oxygen+Mono|PT+Mono|Roboto+Mono|Share+Tech+Mono|Source+Code+Pro|Space+Mono|Ubuntu+Mono|VT323`
    const fontNames = fontString.split('|').map(f => f.replace(/\+/g, ' ')).filter(f => f !== 'Roboto')
    fontNames.unshift('monospace')
    fontNames.unshift('Courier10PitchBT')
