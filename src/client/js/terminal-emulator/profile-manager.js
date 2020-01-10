@@ -173,7 +173,7 @@ class ProfileManager {
       el.style.fontFamily = this._text.fontFamily
       el.style.fontSize = `${this._text.fontSize}px`
       const info = el.getBoundingClientRect()
-      return { w: info.width + 1, h: info.height + 1 }
+      return { w: info.width + 0.5, h: info.height + 0.5 }
    }
 
 }

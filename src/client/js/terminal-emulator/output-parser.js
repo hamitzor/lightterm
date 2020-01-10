@@ -134,18 +134,30 @@ class OutputParser {
                continue
             }
 
-            /* Check if the sequence is a set mode sequence. 
-            If so, just skip, this feature is not yet implemented in lightterm */
-            if (match = new RegExp(/^\u001b\[\dh$/gmu).exec(symbol)) {
-               console.log('SET MODE!, Skipping...')
+            /* Check if the sequence is a set mode sequence.  */
+            if (match = new RegExp(/^\u001b\[(\d)h$/gmu).exec(symbol)) {
+               match.shift()
+               if (parseInt(match[0]) === 4) {
+                  console.log('INSERT MODE!', match[0])
+                  this._context.setReplaceMode(false)
+               }
+               else {
+                  console.log('UNKNOWN SET MODE!', match[0])
+               }
                controlSequenceFlag = false
                continue
             }
 
-            /* Check if the sequence is a reset mode sequence. 
-            If so, just skip, this feature is not yet implemented in lightterm */
-            if (match = new RegExp(/^\u001b\[\dl$/gmu).exec(symbol)) {
-               console.log('RESET MODE!, Skipping...', match[0])
+            /* Check if the sequence is a reset mode sequence. */
+            if (match = new RegExp(/^\u001b\[(\d)l$/gmu).exec(symbol)) {
+               match.shift()
+               if (parseInt(match[0]) === 4) {
+                  console.log('REPLACE MODE!', match[0])
+                  this._context.setReplaceMode(true)
+               }
+               else {
+                  console.log('UNKNOWN SET MODE!', match[0])
+               }
                controlSequenceFlag = false
                continue
             }
@@ -236,7 +248,7 @@ class OutputParser {
             }
 
             /* Check if the sequence is a restore screen sequence. 
-            If so, just skip, restore screen in context  */
+            If so, restore screen in context  */
             if (match = new RegExp(/^\u001b\[\?47l$/gmu).exec(symbol)) {
                controlSequenceFlag = false
                console.log('RESTORE SCREEN!')
@@ -245,7 +257,7 @@ class OutputParser {
             }
 
             /* Check if the sequence is a save screen sequence. 
-            If so, just skip, save screen in context  */
+            If so, save screen in context  */
             if (match = new RegExp(/^\u001b\[\?47h$/gmu).exec(symbol)) {
                controlSequenceFlag = false
                console.log('SAVE SCREEN!')
@@ -426,7 +438,7 @@ class OutputParser {
          }
          /* If control sequence flag is down, try to recognize the character wheter it is something special or not. */
          else {
-            /* If operating system command flag is up, skip. */
+            /* If operating system command flag is up, don't do anything. */
             if (!operatingSystemCommandFlag) {
 
                /* If the character is a backspace, update context properly */
@@ -459,8 +471,12 @@ class OutputParser {
                else {
                   /* if character is none of above, assume that it is a printable character */
 
-                  console.log('NORMAL SYMBOL', symbol === ' ' ? 'SPACE' : symbol)
+                  if (!this._context.isReplaceMode()) {
+                     console.log('INSERT MODE IS ON')
+                     this._context.shiftCellsRight()
+                  }
 
+                  console.log('NORMAL SYMBOL', symbol === ' ' ? 'SPACE' : symbol)
                   /* Eventually, update context with global styling data of cell (x,y) */
                   this._context.setStyleData(this._context.getCursorX(), this._context.getCursorY(), [...globalStyleCodes])
                   /* Update context with character value of cell (x,y) */

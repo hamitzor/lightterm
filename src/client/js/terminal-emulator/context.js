@@ -18,8 +18,24 @@ class Context {
       this._scrollingHeight = rows
       this._applicationKeypad = false
       this._applicationCursors = false
+      this._replaceMode = true
       this.initializeMatrices(rows, cols)
       this._onError = onError
+   }
+
+   shiftCellsRight() {
+      for (let y = this._cols - 1; y > this.getCursorY(); y--) {
+         this.setChar(this.getCursorX(), y, this.getChar(this.getCursorX(), y - 1))
+         this.setStyleData(this.getCursorX(), y, this.getStyleData(this.getCursorX(), y - 1))
+      }
+   }
+
+   setReplaceMode(replaceMode) {
+      this._replaceMode = replaceMode
+   }
+
+   isReplaceMode() {
+      return this._replaceMode
    }
 
    setApplicationCursors(applicationCursors) {

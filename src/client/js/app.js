@@ -29,7 +29,6 @@ const initializeApplication = async () => {
    const settingsEl = document.getElementById('settings')
    const settingsOpenBtnEl = document.getElementById('settings-open-btn')
    const settingsCloseBtnEl = document.getElementById('settings-close-btn')
-   const settingsSaveBtnEl = document.getElementById('settings-save-btn')
    const coloredSelectEl = document.getElementById('settings-colored')
    const rowSettingInputEl = document.getElementById('settings-input-row')
    const colSettingInputEl = document.getElementById('settings-input-col')
@@ -61,26 +60,54 @@ const initializeApplication = async () => {
       settingsEl.classList.add('hide')
    })
 
-   /* When user saves the settings, apply changes to terminal manager, and force a screen refresh */
-   settingsSaveBtnEl.addEventListener('click', () => {
-      profileManager.setColored(coloredSelectEl.value === 'Enabled')
+   /* When user does changes in one of the settings, apply changes to terminal manager, and force a screen refresh */
 
-      if (parseInt(rowSettingInputEl.value) !== profileManager.getRowNumber() || parseInt(colSettingInputEl.value) !== profileManager.getColNumber()) {
-         terminalManager.resize(parseInt(rowSettingInputEl.value), parseInt(colSettingInputEl.value))
-      }
-
-      profileManager.updateTextInformation({
-         fontSize: parseInt(fontSizeSettingInputEl.value),
-         fontFamily: fontFamilySettingSelectEl.value
-      })
-
-      colorSettingEls.forEach((el, i) => {
-         profileManager.updatePalette(i, el.value)
-      })
-
+   coloredSelectEl.addEventListener('change', e => {
+      profileManager.setColored(e.target.value === 'Enabled')
       profileManager.updateStyleSheet()
       terminalManager.forceScreenRefresh()
    })
+
+   rowSettingInputEl.addEventListener('change', e => {
+      if (parseInt(e.target.value) !== profileManager.getRowNumber() || parseInt(colSettingInputEl.value) !== profileManager.getColNumber()) {
+         terminalManager.resize(parseInt(e.target.value), parseInt(colSettingInputEl.value))
+         profileManager.updateStyleSheet()
+         terminalManager.forceScreenRefresh()
+      }
+   })
+
+   colSettingInputEl.addEventListener('change', e => {
+      if (parseInt(rowSettingInputEl.value) !== profileManager.getRowNumber() || parseInt(e.target.value) !== profileManager.getColNumber()) {
+         terminalManager.resize(parseInt(rowSettingInputEl.value), parseInt(e.target.value))
+         profileManager.updateStyleSheet()
+         terminalManager.forceScreenRefresh()
+      }
+   })
+
+   fontSizeSettingInputEl.addEventListener('change', e => {
+      profileManager.updateTextInformation({
+         fontSize: parseInt(e.target.value)
+      })
+      profileManager.updateStyleSheet()
+      terminalManager.forceScreenRefresh()
+   })
+
+   fontFamilySettingSelectEl.addEventListener('change', e => {
+      profileManager.updateTextInformation({
+         fontFamily: e.target.value
+      })
+      profileManager.updateStyleSheet()
+      terminalManager.forceScreenRefresh()
+   })
+
+   colorSettingEls.forEach((el, i) => {
+      el.addEventListener('change', e => {
+         profileManager.updatePalette(i, e.target.value)
+         profileManager.updateStyleSheet()
+         terminalManager.forceScreenRefresh()
+      })
+   })
+
 }
 
 initializeApplication()
