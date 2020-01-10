@@ -2,8 +2,8 @@
 
 class ProfileManager {
    constructor() {
-      this._cols = 98/* Column number */
-      this._rows = 31/* Row number */
+      this._cols = 120/* Column number */
+      this._rows = 40/* Row number */
       this._colored = true
       this._colors = [
          '#ffffff',/* Text color. */
@@ -30,7 +30,7 @@ class ProfileManager {
 
       this._text = {
          fontFamily: 'Courier10PitchBT',
-         fontSize: 24
+         fontSize: 18
       }
    }
 

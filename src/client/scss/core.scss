@@ -11,6 +11,10 @@ html{
    box-sizing: border-box;
  }
 
+body{
+   background: linear-gradient(to right, rgb(255, 243, 243), rgb(81, 113, 138));
+}
+
 body, input {
    height: 100%;
    margin: 0;
@@ -21,6 +25,7 @@ body, input {
 
 button{
    outline: none;
+   border:none;
 }
 
 .main-container {
@@ -67,7 +72,6 @@ button{
 .new-tab-btn{
    background-color: rgb(0, 219, 99);
    color: white;
-   border: 1px solid rgb(0, 175, 79);
    height: 100%;
    cursor: pointer;
    font-size: 20px;
@@ -80,7 +84,6 @@ button{
 .settings-open-btn{
    background-color: rgb(255, 145, 0);
    color: white;
-   border: 1px solid rgb(219, 124, 0);
    height: 100%;
    cursor: pointer;
    font-size: 20px;
@@ -98,20 +101,18 @@ button{
 
 .tab-title{
    height: 100%;
-   background-color: rgb(189, 221, 255);
+   background-color: rgb(224, 238, 255);
    color: rgb(0, 0, 0);
    display: flex;
    align-items: center;
    justify-content: center;
    cursor: pointer;
-   border: 1px solid  rgb(132, 191, 255);
    position: relative;
    font-weight: 500;
 }
 
 .tab-title.inactive{
-   background-color: rgb(224, 239, 255);
-   border: 1px solid  rgb(255, 255, 255);
+   background-color: rgb(240, 247, 255);
 }
 
 .tab-title-close-btn{
@@ -120,7 +121,6 @@ button{
    width: 20px;
    height: 20px;
    color: white;
-   border: 1px solid rgb(161, 41, 41);
    cursor: pointer;
    font-size: 14px;
    border-radius: 20%;
@@ -166,7 +166,6 @@ button{
 
 .settings-close-btn{
    background-color: rgb(216, 77, 77);
-   border: 1px solid rgb(161, 41, 41);
    color: white;
    height: 100%;
    cursor: pointer;
