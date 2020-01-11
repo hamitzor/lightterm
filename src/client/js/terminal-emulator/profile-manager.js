@@ -16,13 +16,13 @@ class ProfileManager {
    }
 
    async createNewProfile(name) {
-      this._profileJsonData.profiles[name] = { ...this.getProfileData() }
+      this._profileJsonData.profiles[name] = JSON.parse(JSON.stringify(this.getProfileData()))
       this._selectedProfile = name
       await this.postProfileJson()
    }
 
    async postProfileJson() {
-      this._profileJsonData.profiles[this._selectedProfile] = { ...this.getProfileData() }
+      this._profileJsonData.profiles[this._selectedProfile] = JSON.parse(JSON.stringify(this.getProfileData()))
       this._profileJsonData.selectedProfile = this._selectedProfile
       return util.postJson('/profile', this._profileJsonData)
    }

@@ -143,7 +143,15 @@ class OutputParser {
             /* Check if the sequence is a Set Scrolling Region. If so, update context */
             if (match = new RegExp(/^\u001b\[(\d*);(\d*)r$/gmu).exec(symbol)) {
                match.shift()
-               const region = [parseInt(match[0]) - 1, parseInt(match[1])]
+               let top = parseInt(match[0])
+               let bottom = parseInt(match[1])
+               if (top === 0) {
+                  top = 1
+               }
+               if (bottom === 0) {
+                  bottom = this._context.getRowNumber()
+               }
+               const region = [top - 1, bottom]
                util.log('Set Scrolling Region!', region)
                this._context.setScrollingRegion(region)
                controlSequenceFlag = false
@@ -264,6 +272,9 @@ class OutputParser {
                let x = parseInt(match[0]), y = 1
                if (match[1]) {
                   y = parseInt(match[1])
+               }
+               if (y === 0) {
+                  y = 1
                }
                util.log('CHANGE CURSOR POSITION', x - 1, y - 1)
                this._context.setCursorX(x - 1)

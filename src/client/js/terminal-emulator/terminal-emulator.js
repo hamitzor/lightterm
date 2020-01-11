@@ -8,9 +8,8 @@ const config = require('../../../../config.json')
 Normal characters like a,b,0,1,-,_,? are not mapped here because they are directly sent to the emulator. 
 Only 12 special keys are handled in emulator in the context of this project. */
 const APPLICATION_KEYPAD_TRANSFORM = {
-   Space: '\u001bO ',
+   Space: '\u001bO\x20',
    Tab: '\u001bOI',
-   Enter: '\u001bOM',
    '*': '\u001bOj',
    '+': '\u001bOk',
    ',': '\u001bOl',
@@ -39,13 +38,13 @@ const APPLICATION_CURSOR_KEYS_TRANSFORM = {
 }
 const ALL_CHARACTERS = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz'
 const TRANSFORM_MAP = {
-   Enter: '\n',
-   Backspace: '\u0008',
+   Enter: '\x0D',
+   Backspace: '\x08',
    ArrowLeft: '\u001b[D',
    ArrowRight: '\u001b[C',
    ArrowUp: '\u001b[A',
    ArrowDown: '\u001b[B',
-   Tab: '\t',
+   Tab: '\x09',
    Escape: '\u001b',
    Delete: '\u001b[3~',
    F12: '',
