@@ -9,4 +9,4 @@ Requirements:
 *  npm or yarn package manager
 
 For running demo, run following commands:
-`yarn` for installing all neccesary packages, then `yarn build` for building and finally `yarn start` to start test server.
+`yarn` or `npm install` for installing all neccesary packages, then `yarn build` or `npm run build` for building and finally `yarn start` or `npm run start` to start test server.
