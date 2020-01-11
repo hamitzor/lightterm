@@ -7,7 +7,7 @@ const config = require('../../../../config.json')
 /* Character map that transforms pressed keys on client-side to actual sequences and characters for the emulator.
 Normal characters like a,b,0,1,-,_,? are not mapped here because they are directly sent to the emulator. 
 Only 12 special keys are handled in emulator in the context of this project. */
-const APPLICATION_KEYPAD_TRANSFORM = {
+const APPLICATION_KEYPAD_MAPPING = {
    Space: '\u001bO\x20',
    Tab: '\u001bOI',
    '*': '\u001bOj',
@@ -28,7 +28,7 @@ const APPLICATION_KEYPAD_TRANSFORM = {
    PageUp: '\u001b[5~',
    '=': '\u001bOX',
 }
-const APPLICATION_CURSOR_KEYS_TRANSFORM = {
+const APPLICATION_CURSOR_KEYS_MAPPING = {
    ArrowLeft: '\u001bOD',
    ArrowRight: '\u001bOC',
    ArrowUp: '\u001bOA',
@@ -37,7 +37,7 @@ const APPLICATION_CURSOR_KEYS_TRANSFORM = {
    End: '\u001bOF',
 }
 const ALL_CHARACTERS = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz'
-const TRANSFORM_MAP = {
+const KEY_MAPPING = {
    Enter: '\x0D',
    Backspace: '\x08',
    ArrowLeft: '\u001b[D',
@@ -215,7 +215,7 @@ class TerminalEmulator {
                this.refreshScreen(this._outputBuffer)
             }
             this._outputBuffer = ''
-         }, 6)
+         }, 2)
       }
       /* If buffered rendering is deactivated, directly use incoming terminal output */
       else {
@@ -253,7 +253,7 @@ class TerminalEmulator {
          }
          else {
             if (ctrl && (e.key === '2' || ALL_CHARACTERS.split('').includes(e.key))) {
-               this.write(TRANSFORM_MAP[`Control${e.key.toUpperCase()}`])
+               this.write(KEY_MAPPING[`Control${e.key.toUpperCase()}`])
                e.preventDefault()
                e.stopPropagation()
             }
@@ -265,13 +265,13 @@ class TerminalEmulator {
                }
                if (!['Shift', 'F5', 'Alt', 'AltGraph', 'Control', 'CapsLock', 'Escape'].includes(e.key)) {
                   /* Transform pressed keys properly and write to emulator standart input */
-                  let keyMap = TRANSFORM_MAP
-                  let cursorKeyMap = TRANSFORM_MAP
+                  let keyMap = KEY_MAPPING
+                  let cursorKeyMap = KEY_MAPPING
                   if (this._context.isApplicationCursors()) {
-                     cursorKeyMap = APPLICATION_CURSOR_KEYS_TRANSFORM
+                     cursorKeyMap = APPLICATION_CURSOR_KEYS_MAPPING
                   }
                   if (this._context.isApplicationKeypad()) {
-                     keyMap = { ...keyMap, ...APPLICATION_KEYPAD_TRANSFORM }
+                     keyMap = { ...keyMap, ...APPLICATION_KEYPAD_MAPPING }
                   }
                   if (['ArrowLeft', 'ArrowRight', 'ArrowDown', 'ArrowUp', 'Home', 'End'].includes(e.key)) {
                      this.write(cursorKeyMap[e.key])
