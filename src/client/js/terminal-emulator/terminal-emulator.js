@@ -9,7 +9,6 @@ Normal characters like a,b,0,1,-,_,? are not mapped here because they are direct
 Only 12 special keys are handled in emulator in the context of this project. */
 const APPLICATION_KEYPAD_MAPPING = {
    Space: '\u001bO\x20',
-   Tab: '\u001bOI',
    '*': '\u001bOj',
    '+': '\u001bOk',
    ',': '\u001bOl',
