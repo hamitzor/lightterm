@@ -1,7 +1,6 @@
 const Context = require('./context')
 const Renderer = require('./renderer')
 const OutputParser = require('./output-parser')
-const util = require('../util')
 const config = require('../../../../config.json')
 
 /* Character map that transforms pressed keys on client-side to actual sequences and characters for the emulator.
@@ -97,6 +96,7 @@ class TerminalEmulator {
       this._outputBuffer = ''
       this._profileManager = profileManager
       this._title = '~'
+      this._lastWrittenData = undefined
 
       /* Create a context for the emulator */
       this._context = new Context({
@@ -260,7 +260,7 @@ class TerminalEmulator {
                      this.write(cursorKeyMap[e.key])
                   }
                   else {
-                     this.write(e.key.length > 1 ? (keyMap[e.key] !== undefined ? { keyboardKey: keyMap[e.key] } : e.key) : e.key)
+                     this.write(e.key.length > 1 ? (keyMap[e.key] !== undefined ? keyMap[e.key] : e.key) : e.key)
                   }
                }
             }
@@ -281,12 +281,14 @@ class TerminalEmulator {
 
    /* Use WebSocket connection to send message to Web API. */
    write(data) {
-      if (typeof data === 'object') {
-         this._ws.send(data.keyboardKey)
+      if (this._lastWrittenData === data) {
+         return
       }
-      else {
-         this._ws.send(data)
-      }
+      this._lastWrittenData = data
+      this._ws.send(data)
+      setTimeout(() => {
+         this._lastWrittenData = undefined
+      }, 10)
    }
 
 }

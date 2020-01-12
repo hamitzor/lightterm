@@ -1,12 +1,12 @@
 {
-   "selectedProfile": "dark",
+   "selectedProfile": "no-color",
    "profiles": {
        "dark": {
-           "cols": 100,
-           "rows": 30,
+           "cols": 160,
+           "rows": 37,
            "colored": true,
            "colors": [
-               "#FFFFFF",
+               "#ffffff",
                "#181818",
                "#181818",
                "#FFFFFF",
@@ -28,13 +28,13 @@
                "#FFFFFF"
            ],
            "text": {
-               "fontFamily": "Oxygen Mono",
+               "fontFamily": "Overpass Mono",
                "fontSize": 18
            }
        },
        "light": {
-           "cols": 100,
-           "rows": 30,
+           "cols": 160,
+           "rows": 40,
            "colored": true,
            "colors": [
                "#131313",
@@ -59,19 +59,19 @@
                "#FFFFFF"
            ],
            "text": {
-               "fontFamily": "Fira Mono",
-               "fontSize": 20
+               "fontFamily": "Fira Code",
+               "fontSize": 16
            }
        },
        "no-color": {
-           "cols": 130,
-           "rows": 35,
+           "cols": 213,
+           "rows": 56,
            "colored": false,
            "colors": [
-               "#FFFFFF",
+               "#ffffff",
+               "#000000",
                "#181818",
-               "#181818",
-               "#FFFFFF",
+               "#ffffff",
                "#545454",
                "#DC322F",
                "#00E677",
@@ -90,8 +90,8 @@
                "#FFFFFF"
            ],
            "text": {
-               "fontFamily": "Courier10PitchBT",
-               "fontSize": 16
+               "fontFamily": "Courier Prime",
+               "fontSize": 14
            }
        }
    }

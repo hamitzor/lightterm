@@ -66,7 +66,7 @@ class Renderer {
 
       for (let x = 0; x < this._context.getRowNumber(); x++) {
          for (let y = 0; y < this._context.getColNumber(); y++) {
-            if ((newCharMatrix[x][y] !== previousCharMatrix[x][y])) {
+            if (previousCharMatrix[x] === undefined || (newCharMatrix[x][y] !== previousCharMatrix[x][y])) {
                cells.push([x, y])
                continue
             }
