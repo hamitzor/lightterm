@@ -40,11 +40,11 @@ class TerminalManager {
       }
    }
 
-   /* Force all emulators for a screen refresh. This method is used when styling are (font-size, font-family, colors)
-   updated. */
-   async forceScreenRefresh() {
+   /* Force all emulators to recreate their screens. This method is used when styling (font-size, font-family) or
+   screen size is updated. */
+   async recreateScreens() {
       for (let i = 0; i < this._tabs.length; i++) {
-         await this._tabs[i].emulator.refreshScreen('')
+         await this._tabs[i].emulator.recreateScreen()
       }
    }
 

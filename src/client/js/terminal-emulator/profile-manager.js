@@ -96,21 +96,6 @@ class ProfileManager {
 
       const getCursorStyle = (color1, color2, n) => `
 
-      @keyframes blinker${n ? `-${n}` : ''} {
-         0% { 
-            color: ${color1};
-            background-color: ${color2};
-         }
-         50% {
-            color: ${color2};
-            background-color: ${color1};
-         }
-         100% {
-            color: ${color1};
-            background-color: ${color2};
-         }
-      }
-
       ${n ? `.term-cell-style-${n}` : ''}.term-cursor-cell {
          color: ${color1};
          background-color: ${color2};
@@ -119,10 +104,6 @@ class ProfileManager {
       
       ${n ? `.term-cell-style-${n}` : ''}.term-cursor-cell.stop-animation {
          animation: none
-      }
-
-      .term-tab:focus ${n ? `.term-cell-style-${n}` : ''}.term-cursor-cell {
-         animation: blinker${n ? `-${n}` : ''} steps(1) 500ms infinite alternate
       }`
 
       let content = `
@@ -132,9 +113,6 @@ class ProfileManager {
          background-color: ${colors[1]};
          font-family: ${this.getProfileData().text.fontFamily};
          font-size: ${this.getProfileData().text.fontSize}px;
-         padding: 2px;
-         cursor: default;
-         outline: none;
       }
 
       .term-inverse-cell{

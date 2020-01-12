@@ -133,6 +133,7 @@ class TerminalEmulator {
 
       /* Create a Renderer instance for emulator */
       this._renderer = new Renderer({ profileManager: this._profileManager, termScreenEl, context: this._context })
+      this._renderer.createScreen()
       /* Create a OutputParser instance for emulator */
       this._parser = new OutputParser({ context: this._context })
 
@@ -202,26 +203,9 @@ class TerminalEmulator {
 
    /* Connect to Web API */
    connect() {
-      /* If buffered rendering is activated, store all incoming terminal output in a buffer and in every 6 miliseconds
-      use the data in buffer and free it. */
-      if (util.BUFFERED_RENDERING) {
-         this._ws.addEventListener('message', e => {
-            this._outputBuffer = this._outputBuffer + e.data
-         })
-
-         setInterval(() => {
-            if (this._outputBuffer !== '' && !this._errorOccured) {
-               this.refreshScreen(this._outputBuffer)
-            }
-            this._outputBuffer = ''
-         }, 2)
-      }
-      /* If buffered rendering is deactivated, directly use incoming terminal output */
-      else {
-         this._ws.addEventListener('message', e => {
-            this.refreshScreen(e.data)
-         })
-      }
+      this._ws.addEventListener('message', e => {
+         this.refreshScreen(e.data)
+      })
    }
 
    /* Attach all event listeners for emulator screen. All keyboard input managed here. */
@@ -282,6 +266,11 @@ class TerminalEmulator {
             }
          }
       })
+   }
+
+   recreateScreen() {
+      this._renderer.createScreen()
+      this._renderer.render()
    }
 
    /* Render a frame. First, parse the content (a terminal output), then call render method of renderer  */

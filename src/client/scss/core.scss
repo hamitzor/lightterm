@@ -160,8 +160,12 @@ button{
 }
 
 .term-tab{
+   display: flex;
+   flex-wrap: wrap;
    border-bottom-left-radius: 5px;
    border-bottom-right-radius: 5px;
+   cursor: default;
+   outline: none;
 }
 
 .term-tab.hide{

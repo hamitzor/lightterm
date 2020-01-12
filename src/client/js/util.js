@@ -1,5 +1,4 @@
 const DEBUG = false
-const BUFFERED_RENDERING = true
 
 /* Create an HMTL element with given string */
 exports.createEl = str => {
@@ -34,4 +33,3 @@ exports.fetchJson = async url => {
 }
 
 exports.DEBUG = DEBUG
-exports.BUFFERED_RENDERING = BUFFERED_RENDERING

@@ -74,7 +74,7 @@ const initializeApplication = async () => {
    coloredSelectEl.addEventListener('change', e => {
       profileManager.setColored(e.target.value === 'Enabled')
       profileManager.updateStyleSheet()
-      terminalManager.forceScreenRefresh()
+      terminalManager.recreateScreens()
    })
 
    rowSettingInputEl.addEventListener('change', e => {
@@ -82,7 +82,7 @@ const initializeApplication = async () => {
          profileManager.setRowNumber(parseInt(rowSettingInputEl.value))
          terminalManager.resize()
          profileManager.updateStyleSheet()
-         terminalManager.forceScreenRefresh()
+         terminalManager.recreateScreens()
       }
    })
 
@@ -91,16 +91,8 @@ const initializeApplication = async () => {
          profileManager.setColumnNumber(parseInt(colSettingInputEl.value))
          terminalManager.resize()
          profileManager.updateStyleSheet()
-         terminalManager.forceScreenRefresh()
+         terminalManager.recreateScreens()
       }
-   })
-
-   fontSizeSettingInputEl.addEventListener('change', e => {
-      profileManager.updateTextInformation({
-         fontSize: parseInt(e.target.value)
-      })
-      profileManager.updateStyleSheet()
-      terminalManager.forceScreenRefresh()
    })
 
    newProfileBtnEl.addEventListener('click', e => {
@@ -116,8 +108,16 @@ const initializeApplication = async () => {
          terminalManager.resize()
       }
       profileManager.updateStyleSheet()
-      terminalManager.forceScreenRefresh()
+      terminalManager.recreateScreens()
       updateSettings()
+   })
+
+   fontSizeSettingInputEl.addEventListener('change', e => {
+      profileManager.updateTextInformation({
+         fontSize: parseInt(e.target.value)
+      })
+      profileManager.updateStyleSheet()
+      terminalManager.recreateScreens()
    })
 
    fontFamilySettingSelectEl.addEventListener('change', e => {
@@ -125,14 +125,14 @@ const initializeApplication = async () => {
          fontFamily: e.target.value
       })
       profileManager.updateStyleSheet()
-      terminalManager.forceScreenRefresh()
+      terminalManager.recreateScreens()
    })
 
    colorSettingEls.forEach((el, i) => {
       el.addEventListener('change', e => {
          profileManager.updatePalette(i, e.target.value)
          profileManager.updateStyleSheet()
-         terminalManager.forceScreenRefresh()
+         terminalManager.recreateScreens()
       })
    })
 

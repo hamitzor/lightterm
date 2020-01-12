@@ -8,35 +8,23 @@ class Renderer {
       this._context = context
       this._profileManager = profileManager
       this._HTMLContent = ''
+      this._previousCharMatrix = this._context.getCharMatrix()
+      this._previousStyleDataMatrix = this._context.getStyleDataMatrix()
+      this._cursor = [0, 0]
    }
 
-   /* Render a frame */
-   render() {
+   createScreen() {
       /* Get calculated width and height of a cell  */
       const { w, h } = this._profileManager.getCellSize()
-      /* Clear root element's inner HTML for a new frame */
       this._root.innerHTML = ''
-      /* Variable that holds HTML string that represents new inner HTML for root element. All additions made to this
-      variable and at the end it will be set as the inner HTML of root element. */
+      this._root.style.width = `${w * this._context.getColNumber()}px`
       let newInnerHTML = ''
-
-      /* Render each row */
       for (let x = 0; x < this._context.getRowNumber(); x++) {
-
-         /* Row has a width equal to column number times width of a cell and has a height equal to height of a cell. */
-         newInnerHTML = newInnerHTML + `<div class="term-row" style="width: ${w * (this._context.getColNumber())}px; height: ${h}px; line-height: ${h}px;">`
-
-         /* Render each cell */
          for (let y = 0; y < this._context.getColNumber(); y++) {
+
             /* Array contains all css classes for the cell*/
             const classList = []
-            /* If (x,y) is same with the cursor position, add cursor css class */
-            if (this._context.getCursorX() === x && this._context.getCursorY() === y) {
-               classList.push('term-cursor-cell')
-            }
-
             const cellStyle = this._context.getStyleData(x, y)
-
             /* If context has a styling data at cell (x,y), iterate over it, and add appropriate css classes */
             if (cellStyle && cellStyle.length > 0) {
                if (cellStyle[0] === 1 && cellStyle[4] === undefined && cellStyle[5] === undefined) {
@@ -58,17 +46,98 @@ class Renderer {
                })
             }
 
-            /* Join css class array and add to the cell element. Put the character stored in context for cell (x,y) 
-            into element */
-            newInnerHTML = newInnerHTML + `<span class="term-cell ${classList.join(' ')}" style="width: ${w}px;">${this._context.getChar(x, y)}</span>`
-
+            newInnerHTML = newInnerHTML + `<span class="term-cell ${classList.join(' ')}" style="width: ${w}px; height: ${h}px">${this._context.getChar(x, y)}</span>`
          }
-
-         newInnerHTML = newInnerHTML + `</div>`
       }
-
-      /* Finally, set innner HTML of root element */
       this._root.innerHTML = newInnerHTML.trim()
+   }
+
+   getSpanIndex(pos) {
+      return pos[0] * this._context.getColNumber() + pos[1]
+   }
+
+   getDifferentCells() {
+      const cells = []
+      const newCharMatrix = this._context.getCharMatrix()
+      const previousCharMatrix = this._previousCharMatrix
+
+      const newStyleDataMatrix = this._context.getStyleDataMatrix()
+      const previousStyleDataMatrix = this._previousStyleDataMatrix
+
+      for (let x = 0; x < this._context.getRowNumber(); x++) {
+         for (let y = 0; y < this._context.getColNumber(); y++) {
+            if ((newCharMatrix[x][y] !== previousCharMatrix[x][y])) {
+               cells.push([x, y])
+               continue
+            }
+
+            if (newStyleDataMatrix[x] === undefined && previousStyleDataMatrix[x] !== undefined) {
+               cells.push([x, y])
+               continue
+            }
+
+            if (previousStyleDataMatrix[x] === undefined && newStyleDataMatrix[x] !== undefined) {
+               cells.push([x, y])
+               continue
+            }
+
+            if ((newStyleDataMatrix[x][y] !== previousStyleDataMatrix[x][y])) {
+               cells.push([x, y])
+               continue
+            }
+         }
+      }
+      return cells
+   }
+
+   /* Render a frame */
+   render() {
+      this._root.childNodes[this.getSpanIndex(this._cursor)].classList.remove('term-cursor-cell')
+      this._cursor = [this._context.getCursorX(), this._context.getCursorY()]
+      this._root.childNodes[this.getSpanIndex(this._cursor)].classList.add('term-cursor-cell')
+      this.getDifferentCells().forEach(cell => {
+         const x = cell[0], y = cell[1]
+         const index = this.getSpanIndex([x, y])
+         /* Array contains all css classes for the cell*/
+         const classList = []
+         const cellStyle = this._context.getStyleData(x, y)
+         /* If context has a styling data at cell (x,y), iterate over it, and add appropriate css classes */
+         if (cellStyle && cellStyle.length > 0) {
+            if (cellStyle[0] === 1 && cellStyle[4] === undefined && cellStyle[5] === undefined) {
+               classList.push('term-inverse-cell')
+            }
+            cellStyle.forEach((styleData, index) => {
+               if (styleData !== undefined) {
+                  if (index !== 0) {
+                     if ((index === 4 || index === 5)) {
+                        if (this._profileManager.isColored()) {
+                           classList.push('term-cell-style-' + styleData)
+                        }
+                     }
+                     else {
+                        classList.push('term-cell-style-' + styleData)
+                     }
+                  }
+               }
+            })
+         }
+         const node = this._root.childNodes[index]
+         node.innerText = this._context.getChar(x, y)
+         if (node.classList.contains('term-cursor-cell')) {
+            node.className = 'term-cursor-cell'
+         }
+         else {
+            node.className = ''
+         }
+         if (classList.length > 0) {
+            classList.forEach(className => {
+               node.classList.add(className)
+            })
+         }
+      })
+
+      this._previousCharMatrix = this._context.getCharMatrix()
+      this._previousStyleDataMatrix = this._context.getStyleDataMatrix()
    }
 }
 

@@ -23,6 +23,30 @@ class Context {
       this._onError = onError
    }
 
+   getCharMatrix() {
+      const m = []
+      for (let i = 0; i < this._rows; i++) {
+         m[i] = []
+         for (let j = 0; j < this._cols; j++) {
+            m[i][j] = this._charMatrix[i][j]
+         }
+      }
+      return m
+   }
+
+   getStyleDataMatrix() {
+      const m = []
+      for (let i = 0; i < this._rows; i++) {
+         if (this._styleDataMatrix[i] !== undefined) {
+            m[i] = []
+            for (let j = 0; j < this._cols; j++) {
+               m[i][j] = this._styleDataMatrix[i][j]
+            }
+         }
+      }
+      return m
+   }
+
    shiftCellsRight() {
       for (let y = this._cols - 1; y > this.getCursorY(); y--) {
          this.setChar(this.getCursorX(), y, this.getChar(this.getCursorX(), y - 1))
@@ -69,7 +93,7 @@ class Context {
             if (x === this.getCursorX()) {
                for (let j = 0; j < this._cols; j++) {
                   this._charMatrix[x][j] = ''
-                  this._styleDataMatrix[x][j] = null
+                  this._styleDataMatrix[x][j] = undefined
                }
             }
             else {
@@ -86,7 +110,7 @@ class Context {
             if (x === this._scrollingRegion[1] - 1) {
                for (let j = 0; j < this._cols; j++) {
                   this._charMatrix[x][j] = ''
-                  this._styleDataMatrix[x][j] = null
+                  this._styleDataMatrix[x][j] = undefined
                }
             }
             else {
@@ -102,7 +126,7 @@ class Context {
          if (x === this._scrollingRegion[0]) {
             for (let j = 0; j < this._cols; j++) {
                this._charMatrix[x][j] = ''
-               this._styleDataMatrix[x][j] = null
+               this._styleDataMatrix[x][j] = undefined
             }
          }
          else {
@@ -117,7 +141,7 @@ class Context {
          if (x === this._scrollingRegion[1] - 1) {
             for (let j = 0; j < this._cols; j++) {
                this._charMatrix[x][j] = ''
-               this._styleDataMatrix[x][j] = null
+               this._styleDataMatrix[x][j] = undefined
             }
          }
          else {
@@ -181,6 +205,7 @@ class Context {
 
    /* Reinitialize the matrices with new column and row */
    resize(rows, cols) {
+      this._cur = [0, 0]
       this.initializeMatrices(rows, cols)
    }
 
@@ -201,7 +226,7 @@ class Context {
       for (let i = 0; i < this.getRowNumber(); i++) {
          for (let j = 0; j < this.getColNumber(); j++) {
             this.setChar(i, j, '')
-            this.setStyleData(i, j, null)
+            this.setStyleData(i, j, undefined)
          }
       }
    }
@@ -210,12 +235,12 @@ class Context {
    removeFromBeginningToCursor() {
       for (let i = this.getCursorY(); i < this.getColNumber(); i++) {
          this.setChar(this.getCursorX(), i, '')
-         this.setStyleData(this.getCursorX(), i, null)
+         this.setStyleData(this.getCursorX(), i, undefined)
       }
       for (let i = this.getCursorX(); i > -1; i--) {
          for (let j = 0; j < this.getColNumber(); j++) {
             this.setChar(i, j, '')
-            this.setStyleData(i, j, null)
+            this.setStyleData(i, j, undefined)
          }
       }
    }
@@ -224,12 +249,12 @@ class Context {
    removeFromCursorToEnd() {
       for (let i = this.getCursorY(); i < this._cols; i++) {
          this.setChar(this.getCursorX(), i, '')
-         this.setStyleData(this.getCursorX(), i, null)
+         this.setStyleData(this.getCursorX(), i, undefined)
       }
       for (let i = this.getCursorX(); i < this._rows; i++) {
          for (let j = 0; j < this._cols; j++) {
             this.setChar(i, j, '')
-            this.setStyleData(i, j, null)
+            this.setStyleData(i, j, undefined)
          }
       }
    }
@@ -238,7 +263,7 @@ class Context {
    removeFromLineBeginningToCursor() {
       for (let i = 0; i < this.getCursorY() + 1; i++) {
          this.setChar(this.getCursorX(), i, '')
-         this.setStyleData(this.getCursorX(), i, null)
+         this.setStyleData(this.getCursorX(), i, undefined)
       }
    }
 
@@ -246,7 +271,7 @@ class Context {
    removeFromCursorToLineEnd() {
       for (let i = this.getCursorY(); i < this.getColNumber(); i++) {
          this.setChar(this.getCursorX(), i, '')
-         this.setStyleData(this.getCursorX(), i, null)
+         this.setStyleData(this.getCursorX(), i, undefined)
       }
    }
 
@@ -254,7 +279,7 @@ class Context {
    removeLine() {
       for (let i = 0; i < this.getColNumber(); i++) {
          this.setChar(this.getCursorX(), i, '')
-         this.setStyleData(this.getCursorX(), i, null)
+         this.setStyleData(this.getCursorX(), i, undefined)
       }
    }
 
@@ -271,7 +296,7 @@ class Context {
             }
             else {
                this.setChar(this.getCursorX(), j, '')
-               this.setStyleData(this.getCursorX(), j, null)
+               this.setStyleData(this.getCursorX(), j, undefined)
             }
          }
       }
