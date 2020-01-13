@@ -71,27 +71,27 @@ const initializeApplication = async () => {
 
    /* When user does changes in one of the settings, apply changes to terminal manager, and force a screen refresh */
 
-   coloredSelectEl.addEventListener('change', e => {
+   coloredSelectEl.addEventListener('change', async e => {
       profileManager.setColored(e.target.value === 'Enabled')
       profileManager.updateStyleSheet()
-      terminalManager.recreateScreens()
+      await terminalManager.recreateScreens()
    })
 
-   rowSettingInputEl.addEventListener('change', e => {
+   rowSettingInputEl.addEventListener('change', async () => {
       if (parseInt(rowSettingInputEl.value) !== profileManager.getRowNumber() || parseInt(colSettingInputEl.value) !== profileManager.getColNumber()) {
          profileManager.setRowNumber(parseInt(rowSettingInputEl.value))
-         terminalManager.resize()
+         await terminalManager.resize()
          profileManager.updateStyleSheet()
-         terminalManager.recreateScreens()
+         await terminalManager.recreateScreens()
       }
    })
 
-   colSettingInputEl.addEventListener('change', e => {
+   colSettingInputEl.addEventListener('change', async () => {
       if (parseInt(rowSettingInputEl.value) !== profileManager.getRowNumber() || parseInt(colSettingInputEl.value) !== profileManager.getColNumber()) {
          profileManager.setColumnNumber(parseInt(colSettingInputEl.value))
-         terminalManager.resize()
+         await terminalManager.resize()
          profileManager.updateStyleSheet()
-         terminalManager.recreateScreens()
+         await terminalManager.recreateScreens()
       }
    })
 
@@ -102,37 +102,37 @@ const initializeApplication = async () => {
       newProfileNameSettingInputEl.value = ''
    })
 
-   profileSelectEl.addEventListener('change', e => {
+   profileSelectEl.addEventListener('change', async e => {
       profileManager.setProfile(e.target.value)
       if (parseInt(rowSettingInputEl.value) !== profileManager.getRowNumber() || parseInt(colSettingInputEl.value) !== profileManager.getColNumber()) {
-         terminalManager.resize()
+         await terminalManager.resize()
       }
       profileManager.updateStyleSheet()
-      terminalManager.recreateScreens()
+      await terminalManager.recreateScreens()
       updateSettings()
    })
 
-   fontSizeSettingInputEl.addEventListener('change', e => {
+   fontSizeSettingInputEl.addEventListener('change', async e => {
       profileManager.updateTextInformation({
          fontSize: parseInt(e.target.value)
       })
       profileManager.updateStyleSheet()
-      terminalManager.recreateScreens()
+      await terminalManager.recreateScreens()
    })
 
-   fontFamilySettingSelectEl.addEventListener('change', e => {
+   fontFamilySettingSelectEl.addEventListener('change', async e => {
       profileManager.updateTextInformation({
          fontFamily: e.target.value
       })
       profileManager.updateStyleSheet()
-      terminalManager.recreateScreens()
+      await terminalManager.recreateScreens()
    })
 
    colorSettingEls.forEach((el, i) => {
-      el.addEventListener('change', e => {
+      el.addEventListener('change', async e => {
          profileManager.updatePalette(i, e.target.value)
          profileManager.updateStyleSheet()
-         terminalManager.recreateScreens()
+         await terminalManager.recreateScreens()
       })
    })
 

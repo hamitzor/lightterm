@@ -130,7 +130,7 @@ button{
    justify-content: center;
    cursor: pointer;
    position: relative;
-   font-weight: 500;
+   font-weight: 600;
 }
 
 .tab-title:first-child{
@@ -138,7 +138,7 @@ button{
 }
 
 .tab-title.inactive{
-   background-color: rgb(255, 255, 255);
+   background-color: rgb(231, 244, 255);
 }
 
 .tab-title-close-btn{

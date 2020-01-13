@@ -99,11 +99,6 @@ class ProfileManager {
       ${n ? `.term-cell-style-${n}` : ''}.term-cursor-cell {
          color: ${color1};
          background-color: ${color2};
-         animation: none
-      }
-      
-      ${n ? `.term-cell-style-${n}` : ''}.term-cursor-cell.stop-animation {
-         animation: none
       }`
 
       let content = `

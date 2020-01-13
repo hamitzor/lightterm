@@ -122,17 +122,19 @@ class Renderer {
             })
          }
          const node = this._root.childNodes[index]
-         node.innerText = this._context.getChar(x, y)
-         if (node.classList.contains('term-cursor-cell')) {
-            node.className = 'term-cursor-cell'
-         }
-         else {
-            node.className = ''
-         }
-         if (classList.length > 0) {
-            classList.forEach(className => {
-               node.classList.add(className)
-            })
+         if (node) {
+            node.innerText = this._context.getChar(x, y)
+            if (node.classList.contains('term-cursor-cell')) {
+               node.className = 'term-cursor-cell'
+            }
+            else {
+               node.className = ''
+            }
+            if (classList.length > 0) {
+               classList.forEach(className => {
+                  node.classList.add(className)
+               })
+            }
          }
       })
 
