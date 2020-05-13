@@ -1,6 +1,9 @@
 # lightterm
 
-A browser based xterm emulator.
+
+![lightterm](https://i.ibb.co/zbS0wnR/image.png)
+
+lightterm is a terminal emulator runs in browsers. It supports most of terminal applications bash, less, and nano text editor. It also supports 16 colors.
 
 Requirements:
 
@@ -8,5 +11,5 @@ Requirements:
 *  Node.js 10 or upper
 *  npm or yarn package manager
 
-For running demo, run following commands:
-`yarn` or `npm install` for installing all neccesary packages, then `yarn build` or `npm run build` for building and finally `yarn start` or `npm run start` to start test server.
+## Setup
+`npm install` for installing all neccesary packages, then `npm run build` for building and finally `npm run start` to start the demo server.
