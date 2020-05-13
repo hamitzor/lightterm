@@ -1,98 +1,98 @@
 {
-   "selectedProfile": "no-color",
-   "profiles": {
-       "dark": {
-           "cols": 160,
-           "rows": 37,
-           "colored": true,
-           "colors": [
-               "#ffffff",
-               "#181818",
-               "#181818",
-               "#FFFFFF",
-               "#545454",
-               "#DC322F",
-               "#00E677",
-               "#FF8400",
-               "#30C4FF",
-               "#B729D9",
-               "#EDD400",
-               "#FFFFFF",
-               "#545454",
-               "#DC322F",
-               "#00E677",
-               "#FF8400",
-               "#30C4FF",
-               "#B729D9",
-               "#EDD400",
-               "#FFFFFF"
-           ],
-           "text": {
-               "fontFamily": "Overpass Mono",
-               "fontSize": 18
-           }
-       },
-       "light": {
-           "cols": 160,
-           "rows": 40,
-           "colored": true,
-           "colors": [
-               "#131313",
-               "#f9f9f9",
-               "#f9f9f9",
-               "#131313",
-               "#545454",
-               "#DC322F",
-               "#43aa33",
-               "#FF8400",
-               "#2265c7",
-               "#B729D9",
-               "#2cb18f",
-               "#FFFFFF",
-               "#545454",
-               "#DC322F",
-               "#00E677",
-               "#FF8400",
-               "#30C4FF",
-               "#B729D9",
-               "#EDD400",
-               "#FFFFFF"
-           ],
-           "text": {
-               "fontFamily": "Fira Code",
-               "fontSize": 16
-           }
-       },
-       "no-color": {
-           "cols": 213,
-           "rows": 56,
-           "colored": false,
-           "colors": [
-               "#ffffff",
-               "#000000",
-               "#181818",
-               "#ffffff",
-               "#545454",
-               "#DC322F",
-               "#00E677",
-               "#FF8400",
-               "#30C4FF",
-               "#B729D9",
-               "#EDD400",
-               "#FFFFFF",
-               "#545454",
-               "#DC322F",
-               "#00E677",
-               "#FF8400",
-               "#30C4FF",
-               "#B729D9",
-               "#EDD400",
-               "#FFFFFF"
-           ],
-           "text": {
-               "fontFamily": "Courier Prime",
-               "fontSize": 14
-           }
-       }
-   }
+    "selectedProfile": "dark",
+    "profiles": {
+        "dark": {
+            "cols": 140,
+            "rows": 30,
+            "colored": true,
+            "colors": [
+                "#ffffff",
+                "#181818",
+                "#181818",
+                "#FFFFFF",
+                "#545454",
+                "#DC322F",
+                "#00E677",
+                "#FF8400",
+                "#30C4FF",
+                "#B729D9",
+                "#EDD400",
+                "#FFFFFF",
+                "#545454",
+                "#DC322F",
+                "#00E677",
+                "#FF8400",
+                "#30C4FF",
+                "#B729D9",
+                "#EDD400",
+                "#FFFFFF"
+            ],
+            "text": {
+                "fontFamily": "Fira Code",
+                "fontSize": 14
+            }
+        },
+        "light": {
+            "cols": 160,
+            "rows": 40,
+            "colored": true,
+            "colors": [
+                "#131313",
+                "#f9f9f9",
+                "#f9f9f9",
+                "#131313",
+                "#545454",
+                "#DC322F",
+                "#43aa33",
+                "#FF8400",
+                "#2265c7",
+                "#B729D9",
+                "#2cb18f",
+                "#FFFFFF",
+                "#545454",
+                "#DC322F",
+                "#00E677",
+                "#FF8400",
+                "#30C4FF",
+                "#B729D9",
+                "#EDD400",
+                "#FFFFFF"
+            ],
+            "text": {
+                "fontFamily": "Fira Code",
+                "fontSize": 16
+            }
+        },
+        "no-color": {
+            "cols": 213,
+            "rows": 56,
+            "colored": false,
+            "colors": [
+                "#ffffff",
+                "#000000",
+                "#181818",
+                "#ffffff",
+                "#545454",
+                "#DC322F",
+                "#00E677",
+                "#FF8400",
+                "#30C4FF",
+                "#B729D9",
+                "#EDD400",
+                "#FFFFFF",
+                "#545454",
+                "#DC322F",
+                "#00E677",
+                "#FF8400",
+                "#30C4FF",
+                "#B729D9",
+                "#EDD400",
+                "#FFFFFF"
+            ],
+            "text": {
+                "fontFamily": "Courier Prime",
+                "fontSize": 14
+            }
+        }
+    }
 }
