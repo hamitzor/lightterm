@@ -3,7 +3,7 @@
 
 ![lightterm](https://i.ibb.co/zbS0wnR/image.png)
 
-lightterm is a terminal emulator runs in browsers. It supports most of terminal applications bash, less, and nano text editor. It also supports 16 colors.
+lightterm is a terminal emulator runs in browsers. It supports most of terminal applications such as bash, less and nano text editor. It also supports 16 colors.
 
 Requirements:
 
