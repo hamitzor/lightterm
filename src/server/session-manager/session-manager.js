@@ -37,7 +37,7 @@ class SessionManager {
       /* Save session data */
       this._sessions[sessionId] = { cols, rows, logs, emulator }
 
-      /* Start saving the output immidiately, since the emulator won't be waiting for
+      /* Start saving the output immediately, since the emulator won't be waiting for
       the client (slave) to connect to produce output. */
       emulator.on('data', data => {
          if (this._sessions[sessionId]) {

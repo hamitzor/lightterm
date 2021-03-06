@@ -20,7 +20,7 @@ exports.resize = (req, res) => {
 }
 
 /* Controller that creates a persistent connection with the client. With the help of this persistent connection,
-client can send and recieve real-time messages to the terminal emulator. Client should create a session before
+client can send and receive real-time messages to the terminal emulator. Client should create a session before
 connecting it. */
 exports.connect = (ws, req) => {
    const sessionId = req.params.sessionId
@@ -30,8 +30,8 @@ exports.connect = (ws, req) => {
    ws.send(session.logs)
 
 
-   /* A bufferring mechanism is used for preventing high traffic between client and server. Outputs are not directly
-   sent to the client. All data first stored in a buffer and every 25 miliseconds, data in the buffer is sent to 
+   /* A buffering mechanism is used for preventing high traffic between client and server. Outputs are not directly
+   sent to the client. All data first stored in a buffer and every 25 milliseconds, data in the buffer is sent to 
    client and the buffer is cleared. */
    let buffer = []
    let timeout = null
@@ -51,7 +51,7 @@ exports.connect = (ws, req) => {
       }
    })
 
-   /* All messages from client are directly written to the emulator standart input. */
+   /* All messages from client are directly written to the emulator standard input. */
    ws.on('message', function (msg) {
       session.emulator.write(msg)
    })
