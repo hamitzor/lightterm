@@ -1,7 +1,7 @@
 # lightterm
 
 
-![lightterm](https://i.ibb.co/zbS0wnR/image.png)
+![lightterm](https://i.ibb.co/zXLJkDw/lightterm.png)
 
 lightterm is a terminal emulator runs in browsers. It supports most of terminal applications such as bash, less and nano text editor. It also supports 16 colors.
 
